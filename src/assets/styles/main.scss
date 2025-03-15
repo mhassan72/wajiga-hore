@@ -1,0 +1,20 @@
+@import './vendor/normalize.css';
+@import 'animate.css';
+
+:root {
+    --primary-color: #ffffff; /* Default light mode color */
+    --text-color: black;
+  }
+  
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #121212; /* Dark mode color */
+        --text-color: white;
+    }
+}
+
+
+html,body {
+    background: var(--primary-color);
+    color: var(--text-color)
+}

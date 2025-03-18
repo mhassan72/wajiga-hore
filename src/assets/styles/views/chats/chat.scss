@@ -1,0 +1,213 @@
+.chat {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+
+    .chat_header {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        padding: 12px;
+        border-bottom: 1px solid var(--faded-color);
+        background: var(--background-color);
+        z-index: 10;
+
+        .options {
+            background: none;
+            border: none;
+            color: inherit;
+        }
+    }
+
+    .context {
+        flex: 1;
+        overflow-y: auto;
+        padding: 90px 10px 80px; // Adjusted for header and input
+        display: flex;
+        flex-direction: column;
+
+        // Hide scrollbar for Webkit browsers (Chrome, Safari, Edge Chromium, Opera)
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        // Hide scrollbar for Firefox
+        scrollbar-width: none; // Works in Firefox
+
+        // Hide scrollbar for Internet Explorer/Edge (non-Chromium versions)
+        -ms-overflow-style: none;
+
+        a {
+            text-decoration: none;
+        }
+
+        .text-container {
+            max-width: 70%;
+            margin-bottom: 10px;
+            padding: 6px;
+            border-radius: 6px;
+            align-self: flex-start;
+
+            &.user {
+                align-self: flex-end;
+
+                .text {
+                    background: var(--primary-color);
+                    color: white;
+                    border-radius: 12px 12px 0 12px !important;
+                }
+            }
+
+            &.seller {
+                align-self: flex-start;
+
+                .text {
+                    background: var(--faded-color);
+                    border-radius: 12px 12px 12px 0 !important;
+                }
+            }
+        }
+
+        .text {
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0px 2px 5px var(--faded-color);
+        }
+
+        .time {
+            font-size: 12px;
+            color: gray;
+            margin-top: 2px;
+        }
+    }
+
+    .chatBar {
+        background: var(--background-color);
+        padding: 12px;
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        left: 0;
+        right: 0;
+        box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+
+        .chatInput {
+            width: 80%;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid var(--faded-color);
+            outline: none;
+            font-size: 16px;
+            background: none;
+            color: inherit;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .sendButton {
+            background: none;
+            color: var(--primary-color);
+            padding: 10px 15px;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+
+            &:hover {
+                color: var(--primary-color);
+            }
+        }
+
+        .soundWave {
+            width: 90%;
+            display: flex;
+        }
+
+        .plusOptions {
+            position: fixed;
+            left: 10px;
+            bottom: 60px;
+            /* Adjusted to be just above the chat input */
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            background: var(--background-color);
+            border-radius: 3px;
+            gap: 10px;
+            /* Box shadow */
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            /* Shadow: X-offset, Y-offset, blur, color */
+
+            /* Add the triangle */
+            &::before {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                /* Position the triangle just below the options */
+                left: 20%;
+                transform: translateX(-50%);
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 10px solid var(--background-color);
+                /* Triangle pointing upwards */
+            }
+
+            button {
+                background: none;
+                border: none;
+                color: inherit;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.9rem;
+                padding: 6px;
+                margin: 0;
+
+                &:hover {
+                    background: var(--faded-color);
+                }
+            }
+        }
+
+    }
+
+    .buttonChat {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        height: 40px;
+        width: 40px;
+
+    }
+}
+
+@keyframes collapseFadeOut {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scaleY(0.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+}
+
+.plusOptions {
+    transform-origin: bottom center;
+}

@@ -1,8 +1,10 @@
 <template>
-  <div class="home">
-    <h1 class="animate__animated animate__fadeInUp">An animated element</h1>
+  <div>
+    <TabsNav />
+    <router-view/>
   </div>
 </template>
-
-<script lang="ts">
+<script lang="ts" setup>
+import TabsNav from '@/components/mobile/TabsNav.vue'
+import '@/assets/styles/main.scss'
 </script>

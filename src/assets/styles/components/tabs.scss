@@ -1,0 +1,26 @@
+.wrapper {
+    background: var(--tabs-color);
+    position: fixed;
+    height: 50px;
+    bottom: 1%;
+    left: 2%;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 50px;
+    overflow: hidden;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 1px 1px 6px 2px rgba(6, 6, 6, 0.08);
+
+    a {
+        display: flex;
+        padding: 9px;
+        color: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

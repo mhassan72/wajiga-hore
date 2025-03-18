@@ -1,90 +1,67 @@
 import { ref } from 'vue';
 import {
-  getAuth,
-  signInWithPhoneNumber,
-  RecaptchaVerifier,
-  ConfirmationResult,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
   updateProfile,
-  User,
   onAuthStateChanged,
+  User,
 } from 'firebase/auth';
-import { app } from '@/services/firebase';
+import { auth } from '@/services/firebase';
 import { useRouter } from 'vue-router';
+import { profile, fetchProfile } from '@/store/user/profile';
 
-// Initialize Firebase
-const auth = getAuth(app); // Initialize Firebase Auth
+// Initialize Firebase user state
 const user = ref<User | null>(null);
 
-export function usePhoneAuth() {
+export function useEmailAuth() {
   const error = ref<string | null>(null);
-  const confirmationResult = ref<ConfirmationResult | null>(null);
-  const recaptchaVerifier = ref<RecaptchaVerifier | null>(null);
+  const router = useRouter();
 
-  // Listen for auth state changes
-  onAuthStateChanged(auth, (firebaseUser) => {
+  // Listen for authentication state changes
+  onAuthStateChanged(auth, async (firebaseUser) => {
     user.value = firebaseUser;
+    if (firebaseUser) {
+      profile.value = {
+        id: firebaseUser.uid,
+        data: firebaseUser,
+      };
+      await fetchProfile(firebaseUser.uid);
+    } else {
+      profile.value = { id: '', data: null };
+    }
   });
 
-  // Initialize reCAPTCHA verifier
-  const initializeRecaptcha = (elementId: string) => {
-    recaptchaVerifier.value = new RecaptchaVerifier(
-      auth,
-      elementId,
-      {
-        size: 'invisible',
-        callback: () => {
-          console.log('reCAPTCHA solved');
-        },
-      }
-    );
-  };
-
-  // Send OTP to the user's phone number
-  const sendOtp = async (phoneNumber: string) => {
-    if (!recaptchaVerifier.value) {
-      error.value = 'reCAPTCHA verifier is not initialized.';
-      return;
-    }
-
+  // Sign in with email and password
+  const signIn = async (email: string, password: string) => {
     try {
-      const result = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier.value);
-      confirmationResult.value = result;
-      error.value = null;
-    } catch (err) {
-      error.value = (err as Error).message;
-      console.error('OTP Send Error:', err);
-    }
-  };
-
-  // Verify the OTP entered by the user (for sign in)
-  const verifyOtp = async (otp: string, router: ReturnType<typeof useRouter>) => {
-    if (!confirmationResult.value) {
-      error.value = 'Confirmation result is missing. Please send OTP again.';
-      return;
-    }
-
-    try {
-      const result = await confirmationResult.value.confirm(otp);
+      const result = await signInWithEmailAndPassword(auth, email, password);
       user.value = result.user;
+      profile.value = {
+        id: result.user.uid,
+        data: result.user,
+      };
       error.value = null;
+      await fetchProfile(result.user.uid);
       router.push(`/profile/${result.user.uid}`);
     } catch (err) {
       error.value = (err as Error).message;
-      console.error('OTP Verification Error:', err);
+      console.error('Sign-In Error:', err);
     }
   };
 
-  // Register a new user with additional profile info
-  const register = async (otp: string, displayName: string, router: ReturnType<typeof useRouter>) => {
-    if (!confirmationResult.value) {
-      error.value = 'Confirmation result is missing. Please send OTP again.';
-      return;
-    }
+  // Register a new user with email, password, and display name
+  const register = async (email: string, password: string, displayName: string) => {
     try {
-      const result = await confirmationResult.value.confirm(otp);
-      user.value = result.user;
+      const result = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(result.user, { displayName });
+      user.value = result.user;
+      profile.value = {
+        id: result.user.uid,
+        data: result.user,
+      };
       error.value = null;
+      await fetchProfile(result.user.uid);
       router.push(`/profile/${result.user.uid}`);
     } catch (err) {
       error.value = (err as Error).message;
@@ -92,17 +69,13 @@ export function usePhoneAuth() {
     }
   };
 
-  // Sign out the user and clear persistent state
-  const signOut = async (router: ReturnType<typeof useRouter>) => {
+  // Sign out the user
+  const signOut = async () => {
     try {
-      await auth.signOut();
+      await firebaseSignOut(auth);
       user.value = null;
+      profile.value = { id: '', data: null };
       error.value = null;
-      confirmationResult.value = null;
-      if (recaptchaVerifier.value) {
-        recaptchaVerifier.value.clear();
-        recaptchaVerifier.value = null;
-      }
       router.push('/auth/login');
     } catch (err) {
       error.value = (err as Error).message;
@@ -113,10 +86,8 @@ export function usePhoneAuth() {
   return {
     user,
     error,
-    sendOtp,
-    verifyOtp,
+    signIn,
     register,
     signOut,
-    initializeRecaptcha,
   };
 }

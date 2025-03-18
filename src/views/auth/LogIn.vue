@@ -1,58 +1,60 @@
 <template>
-    <div>
-      <h1>Phone Number Authentication</h1>
-  
-      <!-- Step 1: Enter Phone Number -->
-      <div v-if="!user">
-        <input v-model="phoneNumber" placeholder="Enter your phone number" />
-        <button @click="handleSendOtp">Send OTP</button>
+  <div class="auth">
+    <h1>Sign In</h1>
+
+    <!-- Email & Password Form -->
+    <div v-if="!user">
+      <div class="sign_in_form">
+        <div class="field">
+          <input v-model="user_auth.email" placeholder="Gali Ciwaan kaga!" type="email" />
+        </div>
       </div>
-  
-      <!-- Step 2: Enter OTP -->
-      <div v-if="confirmationResult && !user">
-        <input v-model="otp" placeholder="Enter OTP" />
-        <button @click="handleVerifyOtp">Verify OTP</button>
+
+      <div class="sign_in_form">
+          <div class="field">
+            <input v-model="user_auth.password" placeholder="*******" type="password" />
+          </div>
       </div>
-  
-      <!-- Step 3: Display User Info -->
-      <div v-if="user">
-        <h2>Welcome, {{ user.displayName || user.phoneNumber }}!</h2>
-        <button @click="signOut">Sign Out</button>
+
+      <div class="action">
+        <button  @click="handleLogin">Sign In</button>
       </div>
-  
-      <!-- Error Message -->
-      <div v-if="error" style="color: red;">
-        Error: {{ error }}
-      </div>
-  
-      <!-- reCAPTCHA Container -->
-      <div id="recaptcha-container"></div>
     </div>
-  </template>
-  
-  <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
-  import { usePhoneAuth } from '@/composables/usePhoneAuth';
-  
-  const { user, error, sendOtp, verifyOtp, register, signOut, initializeRecaptcha } = usePhoneAuth();
-  
-  const phoneNumber = ref('');
-  const otp = ref('');
-  const confirmationResult = ref<any>(null);
-  
-  // Initialize reCAPTCHA on component mount
-  onMounted(async () => {
-    await initializeRecaptcha('recaptcha-container');
-  });
-  
-  // Handle sending OTP
-  const handleSendOtp = async () => {
-    await sendOtp(phoneNumber.value);
-    confirmationResult.value = true; // Set confirmation result
-  };
-  
-  // Handle verifying OTP
-  const handleVerifyOtp = async () => {
-    await verifyOtp(otp.value);
-  };
-  </script>
+
+    <!-- Display User Info -->
+    <div v-if="user">
+      <h2>Welcome, {{ user.displayName || user.email }}!</h2>
+      <button @click="signOut">Sign Out</button>
+    </div>
+
+    <!-- Error Message -->
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useEmailAuth } from '@/composables/usePhoneAuth';
+import '@/assets/styles/views/auth/form.scss'
+
+const { user, error, signIn, register, signOut } = useEmailAuth();
+const user_auth = ref({
+  email: '',
+  password: '',
+  displayName: ''
+})
+
+// Handle Login
+const handleLogin = async () => {
+  await signIn(user_auth.value.email, user_auth.value.password);
+};
+</script>
+
+<style scoped>
+.error {
+  color: red;
+  margin-top: 1em;
+}
+</style>

@@ -1,0 +1,95 @@
+.shop-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: 8px;
+  }
+  
+  .input-field-group {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--faded-color);
+    padding: 6px;
+    margin: 0;
+    gap: 3px;
+    align-items: center;
+
+    input, button, select {
+        background: none;
+        border: none;
+        outline: none;
+        color: inherit;
+
+        &:hover {
+            background: none;
+            border: none;
+        }
+    }
+}
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+
+    input {
+        background: none;
+        border: none;
+    }
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input,
+  textarea,
+  select {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 10px 15px;
+    background-color: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: var(--btn-bg-hover);
+    }
+  }
+  
+  .tags {
+    margin-top: 10px;
+  }
+  
+  .tag {
+    display: inline-block;
+    background-color: var(--faded-color);
+    padding: 5px 5px;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  
+    button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }
+  
+  .error-message {
+    margin-top: 20px;
+    color: var(--chip-bg-color); // Apply color for error messages
+  }

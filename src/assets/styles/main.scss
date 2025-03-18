@@ -2,19 +2,70 @@
 @import 'animate.css';
 
 :root {
-    --primary-color: #ffffff; /* Default light mode color */
-    --text-color: black;
-  }
-  
+    --primary-color: #546de5;
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --search-input-color: #ffffff5d;
+    --tabs-color: white;
+    --faded-color: #30395211;
+    --secondery-text: gray;
+    --dim-text-color: rgba(0, 0, 0, 0.631);
+    --currency-text-color: #10ac84;
+    --chip-bg-color: red;
+    --avatar-svg-color: #576574;
+    --list-item-break: rgba(103, 103, 103, 0.243);
+    --btn-bg: #57606f;
+    --btn-bg-hover: #2f3542;
+    --btn-txt: white;
+    --svg-validator-success: #57606fd0;
+    --svg-validator-error: #57606f;
+    --chat-product-text: white;
+    --cta-bg-warning: #f7d89468;
+    --cta-bg-success: #b7e99488;
+
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
-        --primary-color: #121212; /* Dark mode color */
-        --text-color: white;
+        --primary-color: #778beb;
+        --background-color: #0e1119;
+        --text-color: #ffffff;
+        --search-input-color: rgba(200, 200, 200, 0.083);
+        --tabs-color: #161b29;
+        --faded-color: #5962752c;
+        --secondery-text: #dfe4ea;
+        --dim-text-color: rgba(228, 228, 228, 0.579);
+        --currency-text-color: #00d2d3;
+        --chip-bg-color: rgba(236, 144, 144, 0.046);
+        --avatar-svg-color: #48dbfb;
+        --list-item-break: rgba(188, 188, 188, 0.084);
+        --btn-bg: #ffffff;
+        --btn-bg-hover: #dfe4ea;
+        --btn-txt: #2f3542;
+        --svg-validator-success: #747d8c;
+        --svg-validator-error: #a4b0be;
+        --chat-product-text: white;
+        --cta-bg-warning: #f7d8940c;
+        --cta-bg-success: #b7e99438;
+        /* Adjust if different in dark mode */
     }
 }
 
 
-html,body {
-    background: var(--primary-color);
-    color: var(--text-color)
+
+
+
+body {
+    min-height: 100vh;
+    color: var(--text-color);
+    background: var(--background-color);
+    font-family: sans-serif;
+    transition:
+        color 0.5s,
+        background-color 0.5s;
+}
+
+.page-title {
+    // background: red;
+    font-weight: 300;
 }

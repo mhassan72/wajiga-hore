@@ -9,6 +9,10 @@ import WishListView from '@/views/whishlist/ListView.vue';
 import ConvoView from '@/views/chat/ConvoView.vue'
 import Myshop from '@/views/shop/Myshop.vue';
 import NewShop from '@/views/shop/NewShop.vue';
+import OverView from '@/views/shop/dashboard/OverView.vue';
+import NewProduct from '@/views/shop/dashboard/NewProduct.vue';
+import IndexView from '@/views/shop/dashboard/IndexView.vue';
+import ProductDetails from '@/views/shop/dashboard/ProductDetails.vue';
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -55,6 +59,33 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'my-shop',
     component: Myshop,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/shop/:userId/dashboard/:shopId/',
+    name: 'shop-overview',
+    component: IndexView,
+    meta: { requiresAuth: true },
+    redirect: 'overview',
+    children: [
+      {
+        path: 'overview',
+        name: 'shop-overview-page', // Unique name
+        component: OverView,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'new-product',
+        name: 'new-product',
+        component: NewProduct,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'prev/:productId',
+        name: 'product-details',
+        component: ProductDetails,
+        meta: { requiresAuth: true },
+      }
+    ]
   },
   {
     path: '/chat/:chatId',

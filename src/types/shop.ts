@@ -1,3 +1,15 @@
+// export interface StartShop {
+//     name: string;
+//     owner: string;
+//     description: string;
+//     category: string;
+//     metadata: {
+//         tags: string[];
+//         createdAt: Date;
+//         updatedAt: Date;
+//     };
+// }
+
 export interface Shop {
     name: string; // Shop name
     owner: string; // User ID of the shop owner
@@ -89,10 +101,10 @@ export interface Shop {
         cartAbandonmentRate: number; // Percentage of visitors who add items to cart but don't buy
     };
 
-    metadata?: {
+    metadata: {
         tags: string[]; // Searchable tags (e.g., ["handmade", "vintage", "tech"])
-        createdAt: Date; // Timestamp of shop creation
-        updatedAt: Date; // Timestamp of last update
+        createdAt: Date | string; // Timestamp of shop creation
+        updatedAt: Date | string; // Timestamp of last update
     };
 
     social?: {
@@ -105,3 +117,5 @@ export interface Shop {
         productEmbeddings: string[]; // Array of product embeddings related to the shop
     };
 };
+
+

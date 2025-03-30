@@ -2,26 +2,43 @@
   <div class="chat">
     <PageHeader />
     <div class="context">
-      <MessageRenderer v-for="message in sortedChats" :key="message.id" :message="message" />
+      <MessageRenderer
+        v-for="message in sortedChats"
+        :key="message.id"
+        :message="message"
+      />
     </div>
 
     <!-- Chat Input -->
     <div class="chatBar">
-      <button class="sendButton" v-if="!isRecording && !audioBlob" @click.stop="togglePlusOptions"> + </button>
+      <button
+        class="sendButton"
+        v-if="!isRecording && !audioBlob"
+        @click.stop="togglePlusOptions"
+      >
+        +
+      </button>
 
       <!-- Options Menu -->
       <transition @before-enter="beforeEnter" @leave="beforeLeave">
-        <div ref="plusOptionsRef" class="plusOptions animate__animated"
-          v-if="showPlusOptions && !isRecording && !audioBlob">
+        <div
+          ref="plusOptionsRef"
+          class="plusOptions animate__animated"
+          v-if="showPlusOptions && !isRecording && !audioBlob"
+        >
           <!-- Hidden File Input -->
-          <input type="file" ref="fileInput" @change="uploadImage" accept="image/*" hidden />
-          <button @click="triggerFileInput"> <Image /> Sawir </button>
-          <button> <Money /> Lacag </button>
-          <button> <Check /> Aqbal </button>
-
+          <input
+            type="file"
+            ref="fileInput"
+            @change="uploadImage"
+            accept="image/*"
+            hidden
+          />
+          <button @click="triggerFileInput"><Image /> Sawir</button>
+          <button><Money /> Lacag</button>
+          <button><Check /> Aqbal</button>
         </div>
       </transition>
-
 
       <transition>
         <!-- Upload Progress & Errors (Fixed Position) -->
@@ -31,22 +48,30 @@
         </div>
       </transition>
 
-
-
       <!-- Voice Recording & Playback -->
       <transition>
         <div v-if="isRecording || audioBlob" class="soundWave animate__animated">
-          <!-- Custom Playback Controls -->
           <div class="recording-controls">
             <button v-if="isRecording" @click="stopRecording">⏹ Stop</button>
-            <button v-if="audioBlob && !isPlaying" @click="playAudio">▶️ Play</button>
-            <button v-if="audioBlob && isPlaying" @click="pauseAudio">⏸ Pause</button>
-            <button v-if="audioBlob" @click="stopAudio">🛑 Stop</button>
-            <button v-if="audioBlob" @click="deleteAudio">❌ Delete</button>
-            <button v-if="audioBlob" @click="reRecord">🔁 Re-record</button>
+            <!-- Custom Playback Controls -->
+            <button v-if="audioBlob && !isPlaying" @click="playAudio">▶️</button>
+            <button v-if="audioBlob && isPlaying" @click="pauseAudio">⏸</button>
+            <button v-if="audioBlob" @click="stopAudio"></button>
+            <button v-if="audioBlob" @click="deleteAudio">
+              <svg id="icon-close" viewBox="0 0 20 20">
+                <path
+                  d="M10 8.586l-7.071-7.071-1.414 1.414 7.071 7.071-7.071 7.071 1.414 1.414 7.071-7.071 7.071 7.071 1.414-1.414-7.071-7.071 7.071-7.071-1.414-1.414-7.071 7.071z"
+                ></path>
+              </svg>
+            </button>
+            <button v-if="audioBlob" @click="reRecord">
+              <svg id="icon-refresh" viewBox="0 0 20 20">
+                <path
+                  d="M10 3v2c-0.003 0-0.006 0-0.009 0-2.761 0-5 2.239-5 5 0 1.383 0.561 2.635 1.469 3.54l0 0-1.41 1.41c-1.267-1.267-2.051-3.017-2.051-4.95 0-3.866 3.134-7 7-7 0 0 0 0 0.001 0h-0zM14.95 5.050c1.267 1.267 2.051 3.017 2.051 4.95 0 3.866-3.134 7-7 7-0 0-0 0-0.001 0h0v-2c0.003 0 0.006 0 0.009 0 2.761 0 5-2.239 5-5 0-1.383-0.561-2.635-1.469-3.54l-0-0 1.41-1.41zM10 20l-4-4 4-4v8zM10 8v-8l4 4-4 4z"
+                ></path>
+              </svg>
+            </button>
           </div>
-
-
 
           <!-- Show SoundWave Component When Recording -->
           <SoundWave v-if="isRecording" />
@@ -54,27 +79,46 @@
       </transition>
 
       <!-- Text Input -->
-      <input v-if="!isRecording && !audioBlob" v-model="messageContent" type="text" class="chatInput"
-        placeholder="Type a message..." @keyup.enter="sendMessage" />
+      <input
+        v-if="!isRecording && !audioBlob"
+        v-model="messageContent"
+        type="text"
+        class="chatInput"
+        placeholder="Type a message..."
+        @keyup.enter="sendMessage"
+      />
 
       <div class="buttonChat">
-        <button v-if="messageContent.length > 0 && !isRecording && !audioBlob" class="sendButton" @click="sendMessage">
+        <button
+          v-if="messageContent.length > 0 && !isRecording && !audioBlob"
+          class="sendButton"
+          @click="sendMessage"
+        >
           <IconEcosystem />
         </button>
 
         <div class="recorder" v-else>
           <!-- Stop Recording Button -->
-          <button v-if="isRecording && !audioBlob" class="sendButton" @click="stopRecording">⏹</button>
+          <button
+            v-if="isRecording && !audioBlob"
+            class="sendButton"
+            @click="stopRecording"
+          >
+            ⏹
+          </button>
 
           <!-- Start Recording Button -->
-          <button v-if="!isRecording && !audioBlob" class="sendButton" @click="toggleRecording">
+          <button
+            v-if="!isRecording && !audioBlob"
+            class="sendButton"
+            @click="toggleRecording"
+          >
             <Mic />
           </button>
 
           <!-- Send Recording Button (appears after recording is done) -->
-          <button v-if="audioBlob" class="sendButton" @click="sendRecording"> ➡️ </button>
+          <button v-if="audioBlob" class="sendButton" @click="sendRecording">➡️</button>
         </div>
-
       </div>
     </div>
   </div>
@@ -94,12 +138,18 @@ import Mic from "@/components/icons/mic.vue";
 import IconEcosystem from "@/components/icons/IconEcosystem.vue";
 import SoundWave from "@/components/chat/SoundWave.vue";
 import { storage, db } from "@/services/firebase";
-import { getStorage, ref as stRef, uploadBytes, getDownloadURL ,  uploadBytesResumable} from "firebase/storage";
+import {
+  getStorage,
+  ref as stRef,
+  uploadBytes,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { getDatabase, ref as dbRef, push } from "firebase/database";
 import { dbRt } from "@/services/firebase";
 import { useRoute } from "vue-router";
 import { Message } from "@/composables/useChat";
-
+import { profile } from "@/store/user/profile";
 // Chat logic
 const { sortedChats, messageContent, sendMessage, showPlusOptions } = useChat();
 const plusOptionsRef = ref<HTMLElement | null>(null);
@@ -119,14 +169,12 @@ const uploadProgress = ref(0);
 const errorMessage = ref("");
 const currentUploadedImage = ref<string | null>(null); // Store image URL
 
-
-// handler file upload  here 
+// handler file upload  here
 
 const triggerFileInput = () => {
   errorMessage.value = ""; // Clear previous errors
   fileInput.value?.click();
 };
-
 
 const uploadImage = async (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
@@ -138,7 +186,10 @@ const uploadImage = async (event: Event) => {
     errorMessage.value = "";
 
     // Generate a unique file path
-    const imageRef = stRef(storage, `users/${route.params.chatId}/uploadedImages/${Date.now()}-${file.name}`);
+    const imageRef = stRef(
+      storage,
+      `users/${route.params.chatId}/uploadedImages/${Date.now()}-${file.name}`
+    );
 
     // Upload with progress tracking
     const uploadTask = uploadBytesResumable(imageRef, file);
@@ -165,12 +216,12 @@ const uploadImage = async (event: Event) => {
         // Step 2: Create the message with image URL
         const newMessage: Message = {
           id: Date.now().toString(),
-          senderId: "currentUser", // Replace with actual sender ID
+          senderId: profile.value.id, // Replace with actual sender ID
           recipientId: "recipientUser", // Replace with actual recipient ID
           type: "image",
           content: {
             imageUrl: imageUrl,
-            caption: messageContent.value
+            caption: messageContent.value,
           },
           timestamp: Date.now(),
           seen: false,
@@ -178,7 +229,7 @@ const uploadImage = async (event: Event) => {
 
         // Store image URL in Firebase Database
         const chatRef = dbRef(dbRt, `messages/${route.params.chatId}`);
-        await push(chatRef, { imageUrl });
+        await push(chatRef, newMessage);
 
         console.log("Image uploaded successfully:", imageUrl);
         uploading.value = false;
@@ -192,15 +243,14 @@ const uploadImage = async (event: Event) => {
   }
 };
 
-
-// handler voice here 
+// handler voice here
 
 const sendRecording = async () => {
   if (!audioBlob.value) return;
 
   try {
     // Step 1: Define audio file paths for each format (MP3, MP4, WAV, OGG, and WEBM)
-    const formats = ['mp3', 'mp4', 'wav', 'ogg', 'webm'];
+    const formats = ["mp3", "mp4", "wav", "ogg", "webm"];
     const audioFileUrls: Record<string, string> = {};
 
     // Upload the audio in different formats
@@ -227,8 +277,8 @@ const sendRecording = async () => {
           mp4: audioFileUrls.mp4, // Audio URL for MP4 format
           wav: audioFileUrls.wav, // Audio URL for WAV format
           ogg: audioFileUrls.ogg, // Audio URL for OGG format
-          webm: audioFileUrls.webm // Audio URL for WEBM format
-        }
+          webm: audioFileUrls.webm, // Audio URL for WEBM format
+        },
       },
       timestamp: Date.now(),
       seen: false,
@@ -238,12 +288,10 @@ const sendRecording = async () => {
     const chatRef = dbRef(dbRt, `messages/${route.params.chatId}`);
     await push(chatRef, newMessage);
     messageContent.value = ""; // Reset message content after sending
-
   } catch (error) {
     console.error("Error uploading and sending message:", error);
   }
 };
-
 
 // Toggle Menu
 const togglePlusOptions = () => {
@@ -292,7 +340,7 @@ const stopRecording = () => {
     mediaRecorder.value = null; // Ensures the recorder is cleaned up
   }
   if (mediaStream) {
-    mediaStream.getTracks().forEach(track => track.stop()); // Gracefully stop the mic stream
+    mediaStream.getTracks().forEach((track) => track.stop()); // Gracefully stop the mic stream
     mediaStream = null;
   }
   isRecording.value = false;
@@ -357,7 +405,7 @@ const deleteAudio = () => {
 
   // Clean up the media stream as well if it exists
   if (mediaStream) {
-    mediaStream.getTracks().forEach(track => track.stop()); // Gracefully stop the mic stream
+    mediaStream.getTracks().forEach((track) => track.stop()); // Gracefully stop the mic stream
     mediaStream = null;
   }
 
@@ -420,26 +468,3 @@ const beforeLeave = (el: HTMLElement) => {
 // Cleanup on Unmount
 onBeforeUnmount(() => document.removeEventListener("click", handleClickOutside));
 </script>
-
-
-
-<style scoped>
-.recording-controls {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.recording-controls button {
-  background-color: #2e2e2e;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.recording-controls button:hover {
-  background-color: #555;
-}
-</style>

@@ -36,7 +36,7 @@
             <div class="tabs">
                 <router-link to="/" class="btn-primary active"> Orders</router-link>
                 <router-link to="/favourite" class="btn-primary"> Favourite</router-link>
-                <router-link :to="`/shop/${profile.data.id}`" class="btn-primary"> My Shops</router-link>
+                <router-link :to="`/shop/${profile.id}`" class="btn-primary"> My Shops</router-link>
             </div>
             <div class="order-card animate__animated animate__fadeInUp">
                 <h3>Latest Order: {{ user.latestOrder }}</h3>

@@ -1,5 +1,9 @@
 .btn-clean {
-    background: none;
+    background: none !important;
     border: none;
-    color: inherit
+    color: inherit;
+    
+    &:hover {
+        background: none !important;
+    }
 }

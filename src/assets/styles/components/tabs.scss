@@ -10,10 +10,11 @@
     justify-content: space-around;
     border-radius: 50px;
     overflow: hidden;
-    max-width: 400px;
+    max-width: 350px;
     width: 100%;
     margin: 0 auto;
     box-shadow: 1px 1px 6px 2px rgba(6, 6, 6, 0.08);
+    z-index: var(--max-z-index);
 
     a {
         display: flex;

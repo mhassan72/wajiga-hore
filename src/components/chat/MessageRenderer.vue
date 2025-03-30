@@ -1,8 +1,15 @@
 <template>
-  <div class="text-container" :class="{ user: message.senderId === 'currentUser', seller: message.senderId !== 'currentUser' }">
+  <div
+    class="text-container"
+    :class="{
+      user: message.senderId === 'currentUser',
+      seller: message.senderId !== 'currentUser',
+    }"
+  >
     <!-- Text Message -->
     <div v-if="message.type === 'text'" class="text">
-      <strong>{{ message.senderId }}</strong>:
+      <strong>{{ message.senderId }}</strong
+      >:
       <p>{{ message.content }}</p>
     </div>
 
@@ -13,8 +20,12 @@
 
     <!-- Image Message -->
     <div v-if="message.type === 'image'" class="image">
-      <img class="imagePrev" :src="(message.content as Context).imageUrl" :alt="(message.content as Context).caption" />
-      <div class="text">{{ (message.content as Context).caption }}</div>
+      <img
+        class="imagePrev"
+        :src="(message.content as Context).imageUrl"
+        :alt="(message.content as Context).caption"
+      />
+      <!-- <div class="text">{{ (message.content as Context).caption }}</div> -->
     </div>
 
     <!-- Order Confirmation -->
@@ -33,14 +44,20 @@
     </div>
 
     <!-- Default for Unsupported Types -->
-    <div v-if="!['text', 'payment-request', 'image', 'order-confirmation', 'audioFile'].includes(message.type)">
-      Unsupported message type: {{ message.type }}
+    <div
+      v-if="
+        !['text', 'payment-request', 'image', 'order-confirmation', 'audioFile'].includes(
+          message.type
+        )
+      "
+    >
+      Unsupported message type: {{ message.content }}
       {{ message }}
     </div>
 
     <!-- Seen Status and Timestamp -->
     <div class="seen">
-      <small>{{ message.seen ? 'seen' : 'unseen' }}</small>
+      <small>{{ message.seen ? "seen" : "unseen" }}</small>
     </div>
     <span class="time">{{ formatTimestamp(message.timestamp) }}</span>
   </div>
@@ -59,7 +76,10 @@ const formatTimestamp = (timestamp: number): string => {
   if (diffInDays === 0) {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   } else if (diffInDays === 1) {
-    return `Yesterday at ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+    return `Yesterday at ${date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
   } else {
     return date.toLocaleString();
   }

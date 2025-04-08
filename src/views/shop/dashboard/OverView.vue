@@ -2,27 +2,70 @@
   <div class="page">
     <PageHeader v-if="shop && shop.name" :title="shop.name" />
     <TabsNavShop />
-    <p>'/shop/:userId/dashboard/:shopId/overview'</p>
 
-    {{ shop }}
-    {{ products.length }}
-
-    <div class="product" v-if="products.length > 0" v-for="(item, index) in products" :key="index">
-      {{ index+1}} - {{ item.data.name }}
+    <div class="description">
+      {{ shop.description }}
     </div>
 
-    <div v-else>
-      <h5>No Products listed</h5>
+    <ul class="tags">
+      <li  v-for="(tag, index) in shop?.metadata?.tags" :key="index" class="tag">
+        {{ tag }}
+      </li>
+    </ul>
+
+    <br>
+
+    <div class="overview">
+      <p class="label">Warbixin Guud</p>
+      <ul>
+
+        <li>
+          <h3>{{ products.length }}</h3>
+          <strong>Alaab</strong> 
+        </li>
+
+        <li>
+          <h3>{{ products.length }}</h3>
+          <strong>Dalab</strong> 
+        </li>
+
+        <li>
+          <h3>{{ "$" + products.length + ".00"}}</h3>
+          <strong>Dakhli</strong> 
+        </li>
+
+      </ul>
     </div>
 
-    <!-- <button  @click="getProducts">Get Products</button> -->
+    <br>
+    <br>
 
-    <!-- Check if shop data is available -->
-    <div v-if="shop && shop.name">
-      <p><strong>Shop Name:</strong> {{ shop.name }}</p>
-      <p><strong>Shop ID:</strong> {{ shop.id }}</p>
-      <p><strong>Owner:</strong> {{ shop.owner }}</p>
-    </div>
+    
+    <!-- {{ products.length }} -->
+      <div class="products">
+
+        <div class="product" v-if="products.length > 0" v-for="(item, index) in products" :key="index">
+          <router-link :to="`prev/${item.uid}`">
+
+            <img :src="item.data.images[0]" alt="Product Image" />
+            {{ index+1}} - {{ item.data.name }}
+            <ul>
+              <li >
+                {{ item.data.category }}
+              </li>
+            </ul>
+
+            <h3>{{ "$" + item.data.price }}</h3>
+
+          </router-link>
+        </div>
+    
+        <div v-else>
+          <h5>No Products listed</h5>
+        </div>
+
+      </div>
+
 
     <!-- Show loading or error if no shop data -->
     <div v-if="loading">

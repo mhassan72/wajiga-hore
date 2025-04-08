@@ -11,8 +11,9 @@
     box-shadow: 1px 1px 6px 2px rgba(6, 6, 6, 0.08);
     padding-right: 9px;
     padding-left: 9px;
+    transition: all 0.1s ease-in-out;
 
-    .spinner {
+    #icon-spinner {
         animation: spin 1s linear infinite;
     }
 

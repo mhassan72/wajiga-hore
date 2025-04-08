@@ -18,7 +18,22 @@
       </button>
     </div>
 
-    <div class="list_container">
+    <transition
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+      >
+      <div class="loading_wrapper" v-if="loading">
+        <br>
+        Loading ...
+      </div>
+    </transition>
+
+    <transition
+            enter-active-class="animate__animated animate__fadeIn"
+            leave-active-class="animate__animated animate__fadeOut"
+    >
+
+    <div class="list_container" v-if="!loading">
       <ul class="convo_list">
         <li class="convo" v-for="chat in chats" :key="chat.chatId">
           <router-link :to="`/chat/${chat.chatId}`">
@@ -38,6 +53,10 @@
         </li>
       </ul>
     </div>
+
+  </transition>
+
+
   </div>
 </template>
 
@@ -45,7 +64,7 @@
 import { ref, onMounted } from "vue";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { db } from "@/services/firebase";
+import { db, auth } from "@/services/firebase";
 import BackBtn from "@/components/mobile/BackBtn.vue";
 
 import "@/assets/styles/views/chats/chat_list.scss";
@@ -71,7 +90,7 @@ const loading = ref(true);
 // Fetch chats for the authenticated user
 const fetchChats = async () => {
   try {
-    const auth = getAuth();
+    loading.value = true;
     const user = auth.currentUser;
     if (!user) return console.warn("⚠️ User not authenticated");
 

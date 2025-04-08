@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { app } from '@/services/firebase'; // Import the initialized Firebase app
+import { auth } from '@/services/firebase'; // Import the initialized Firebase app
 import { routes } from './routes';
 import { fetchProfile } from '@/store/user/profile'
 
@@ -11,28 +11,38 @@ const router = createRouter({
 });
 
 // Navigation guard to check authentication status
-router.beforeEach(async  (to, from, next) => {
-  const auth = getAuth(app); // Use the initialized app
-  const user = auth.currentUser;
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe()
+        resolve(user)
+      },
+      reject
+    )
+  })
+}
+
+router.beforeEach(async (to, from, next) => {
+  const user = await getCurrentUser()
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    // Route requires authentication
     if (!user) {
-      next({ name: 'login' });
+      next({ name: 'login' })
     } else {
-      next();
+      next()
     }
   } else if (to.matched.some(record => record.meta.requiresUnauth)) {
-    // Route requires unauthenticated user
     if (user) {
-      await fetchProfile(user.uid)
-      next({ name: 'profile', params: { uid: user.uid } });
+      await fetchProfile((user as any).uid)
+      next({ name: 'profile', params: { uid: (user as any).uid } })
     } else {
-      next();
+      next()
     }
   } else {
-    next();
+    next()
   }
-});
+})
 
 export default router;

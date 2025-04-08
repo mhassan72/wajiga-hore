@@ -1,0 +1,39 @@
+.details {
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+.tabs {
+    position: fixed;
+    bottom: 2vh;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    background: var(--faded-color);
+    border-radius: 50px;
+    width: 70%;
+    margin: 0 auto;
+  
+    .price {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+  
+    .contact-btn {
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+    }
+  }

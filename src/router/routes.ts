@@ -13,6 +13,7 @@ import OverView from '@/views/shop/dashboard/OverView.vue';
 import NewProduct from '@/views/shop/dashboard/NewProduct.vue';
 import IndexView from '@/views/shop/dashboard/IndexView.vue';
 import ProductDetails from '@/views/shop/dashboard/ProductDetails.vue';
+import ForgotPassword from '@/views/auth/ForgotPassword.vue';
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -53,6 +54,12 @@ export const routes: Array<RouteRecordRaw> = [
         component: NewShop,
       }
     ],
+  },
+  {
+    path: '/product/:productId',
+    name: 'product',
+    component: () => import('@/views/browse/ProductDetail.vue'), // ✅ Fixed alias
+    meta: { requiresAuth: false },
   },
   {
     path: '/shop/:userId',
@@ -109,6 +116,11 @@ export const routes: Array<RouteRecordRaw> = [
         name: 'register',
         component: RegisterNew,
       },
+      {
+        path: 'forgot-password',
+        name: 'forgot-password',
+        component: ForgotPassword, // ✅ Fixed alias
+      }
     ],
   },
 ];

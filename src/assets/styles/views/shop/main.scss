@@ -12,3 +12,48 @@
     }
 
 }
+
+.list {
+    padding: 8px;
+
+    ul {
+        padding: 0;
+        margin: 0;
+
+        li {
+            padding: 0;
+            margin: 0;
+
+            a {
+                text-decoration: none;
+                color: inherit;
+                display: flex;
+                justify-content: space-between;
+                background: var(--faded-color);
+                align-items: center;
+                padding-right: 20px;
+                border-radius: 12px;
+                padding: 8px;
+
+                .shop-comp {
+
+                    .tag {
+                        font-weight: 400;
+                        font-size: .9rem;
+                    }
+                }
+                .avatar  {
+                    width: 60px;
+                    height: 60px;
+                    background: var(--background-color);
+                    border-radius: 50px;
+                }
+        
+            }
+
+
+        }
+    }
+
+
+}

@@ -1,31 +1,36 @@
 <template>
-    <div class="wrapper">
-        <RouterLink to="/">
-            <div>
-                <IconHome />
-            </div>
-        </RouterLink>
-        <RouterLink :to="`/profile/${profile.id}`">
-            <div>
-                <IconUser />
-            </div>
-        </RouterLink>
-        <RouterLink to="/search/kfbywef">
-            <div>
-                <IconSearch />
-            </div>
-        </RouterLink>
-        <RouterLink to="/favourite">
-            <div>
-                <IconSupport />
-            </div>
-        </RouterLink>
-        <RouterLink to="/chats">
-            <div>
-                <IconCommunity />
-            </div>
-        </RouterLink>
-    </div>
+    <transition
+            enter-active-class="animate__animated animate__fadeInUp"
+            leave-active-class="animate__animated animate__fadeOutDown"
+    >
+        <div class="wrapper">
+            <RouterLink to="/">
+                <div>
+                    <IconHome />
+                </div>
+            </RouterLink>
+            <RouterLink :to="`/profile/${profile.id}`">
+                <div>
+                    <IconUser />
+                </div>
+            </RouterLink>
+            <RouterLink to="/search/kfbywef">
+                <div>
+                    <IconSearch />
+                </div>
+            </RouterLink>
+            <RouterLink to="/favourite">
+                <div>
+                    <IconSupport />
+                </div>
+            </RouterLink>
+            <RouterLink to="/chats">
+                <div>
+                    <IconCommunity />
+                </div>
+            </RouterLink>
+        </div>
+    </transition>
 </template>
 <script lang="ts" setup>
     import '@/assets/styles/components/tabs.scss'

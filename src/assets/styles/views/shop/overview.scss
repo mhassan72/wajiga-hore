@@ -1,3 +1,60 @@
 .page {
+
+    .description {
+        font-weight: 300;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 1.2rem;
+    }
+
+    .product {
+        padding: 6px;
+    }
     
+    .overview {
+        margin: 0 auto;
+
+        .label {
+            font-weight: 300;
+        }
+
+        ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+
+            li {
+                text-align: center;
+                // background: var(--faded-color);
+                min-width: 33%;
+                padding: 3px;
+                list-style: none;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                h3 {
+                    padding: 0;
+                    margin: 0;
+                }
+
+                strong {
+                    font-weight: 300;
+                    font-size: 0.8rem;
+                    text-transform: uppercase;
+                }
+            }
+        }
+    }
+
+    .tags {
+        display: flex;
+        padding: 0;
+        margin: 0;
+
+        .tag {
+            list-style: none;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="shop animate__animated animate__fadeIn">
-        <PageHeader title="My Shop" />
+        <PageHeader title="Dukaaman Keyga" />
 
         <!-- Show this if no shops are available for the current user -->
         <div class="container" v-if="shops.length < 1">
@@ -14,10 +14,35 @@
         <!-- Show this if the user has shops -->
         <div class="container" v-else>
             <div class="list">
-                <p>List all the shops where the current user is the owner</p>
+                <!-- <p>List all the shops where the current user is the owner</p> -->
                 <ul>
-                    <li v-for="(shop, id) in shops" :key="id">
-                        <router-link :to="`/shop/${route.params.userId}/dashboard/${shop.id}/overview`">{{ shop.name }}</router-link>
+                    <li v-for="(shop, id) in shops" :key="id"  class="shop-arr">
+                        <router-link :to="`/shop/${route.params.userId}/dashboard/${shop.id}/overview`">
+                            <div class="shop-comp">
+                                
+                                <div class="name">
+                                    {{ shop.name }}
+                                </div>
+
+                                <div class="id">
+                                    {{ shop.id }}
+                                </div>
+
+                                <!-- <div class="description">
+                                    {{ shop.description }}...
+                                </div> -->
+
+
+                                <div class="tags">
+                                    <div class="tag" v-for="(tag, index) in shop.metadata.tags">
+                                        {{ tag }} 
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="avatar">
+                            </div>
+                        </router-link>
                     </li>
                 </ul>
             </div>

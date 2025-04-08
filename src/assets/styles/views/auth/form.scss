@@ -1,179 +1,179 @@
 
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 600;
-}
-.error-message {
-    display: flex;
-    border: 2px solid #ff1b5ce2;
-    background: rgba(128, 128, 128, 0.083);
-    border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 10px;
-    align-items: center;
-    justify-content: start;
-    svg {
-        opacity: .45;
-        color: gray;
-    }
+// a {
+//     color: var(--primary-color);
+//     text-decoration: none;
+//     font-weight: 600;
+// }
+// .error-message {
+//     display: flex;
+//     border: 2px solid #ff1b5ce2;
+//     background: rgba(128, 128, 128, 0.083);
+//     border-radius: 6px;
+//     padding: 12px;
+//     margin-bottom: 10px;
+//     align-items: center;
+//     justify-content: start;
+//     svg {
+//         opacity: .45;
+//         color: gray;
+//     }
 
-}
+// }
 
-.loading {
-    .txt-success {
-        color: #b8e994  !important;
-    }
+// .loading {
+//     .txt-success {
+//         color: #b8e994  !important;
+//     }
 
-    .txt-error {
-        color: #b71540 !important;
-    }
+//     .txt-error {
+//         color: #b71540 !important;
+//     }
 
-    .action {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+//     .action {
+//         display: flex;
+//         align-items: center;
+//         justify-content: space-between;
 
-    }
+//     }
 
-    .loadingSvg {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 6px;
-        display: inline;
+//     .loadingSvg {
+//         width: 40px;
+//         height: 40px;
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         padding: 6px;
+//         display: inline;
     
-        svg {
-            width: 32px;
-            height: 32px;
-            border-radius: 50px;
-            animation: spin .6s linear infinite;
-            color: inherit;
-        }
-    }
-}
+//         svg {
+//             width: 32px;
+//             height: 32px;
+//             border-radius: 50px;
+//             animation: spin .6s linear infinite;
+//             color: inherit;
+//         }
+//     }
+// }
 
-.auth {
-    max-width: 400px;
-    margin: 0 auto;
-    scroll-behavior: smooth;
-    padding: 12px;
-    padding-top: 10vh;
+// .auth {
+//     max-width: 400px;
+//     margin: 0 auto;
+//     scroll-behavior: smooth;
+//     padding: 12px;
+//     padding-top: 10vh;
 
-    .sign_in_form {
-        padding: 0;
-        margin: 0;
+//     .sign_in_form {
+//         padding: 0;
+//         margin: 0;
 
-        select {
-            background: none;
-            border: none;
-            padding: 12px;
-            color: inherit;
-            margin-right: 6px;
-            width: 100%;
-            font-size: 1.2rem;
-            outline: none;
-        }
+//         select {
+//             background: none;
+//             border: none;
+//             padding: 12px;
+//             color: inherit;
+//             margin-right: 6px;
+//             width: 100%;
+//             font-size: 1.2rem;
+//             outline: none;
+//         }
 
-        .action {
-            text-align: right;
-            padding: 0;
-            margin: 0 auto;
-            width: 100%;
-            button {
-                margin: 0;
-                background: var(--primary-color);
-                border: none;
-                padding: 8px;
-                font-size: 1rem;
-                color: inherit;
-                border-radius: 3px;
-                padding-left: 12px;
-                padding-right: 12px;
-                cursor: pointer;
-            }
+//         .action {
+//             text-align: right;
+//             padding: 0;
+//             margin: 0 auto;
+//             width: 100%;
+//             button {
+//                 margin: 0;
+//                 background: var(--primary-color);
+//                 border: none;
+//                 padding: 8px;
+//                 font-size: 1rem;
+//                 color: inherit;
+//                 border-radius: 3px;
+//                 padding-left: 12px;
+//                 padding-right: 12px;
+//                 cursor: pointer;
+//             }
 
-            .continue {
-                border: none;
-                background: var(--btn-bg);
-                color: var(--btn-txt);
-                padding: 12px;
-                padding-left: 20px;
-                padding-right: 20px;
-                transition: all 0.4s ease-in-out;
-                font-weight: 600;
+//             .continue {
+//                 border: none;
+//                 background: var(--btn-bg);
+//                 color: var(--btn-txt);
+//                 padding: 12px;
+//                 padding-left: 20px;
+//                 padding-right: 20px;
+//                 transition: all 0.4s ease-in-out;
+//                 font-weight: 600;
 
-                &:hover {
-                    background: var(--btn-bg-hover);
-                }
-            }
-        }
+//                 &:hover {
+//                     background: var(--btn-bg-hover);
+//                 }
+//             }
+//         }
 
-        .field {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--faded-color);
-            margin-bottom: 10px;
-            border-radius: 3px;
-            padding-left: 10px;
+//         .field {
+//             width: 100%;
+//             display: flex;
+//             align-items: center;
+//             justify-content: space-between;
+//             background: var(--faded-color);
+//             margin-bottom: 10px;
+//             border-radius: 3px;
+//             padding-left: 10px;
 
-            label {
-                padding-left: 5px;
-                padding-bottom: 5px;
-                padding-top: 5px;
-                color: var(--dim-text-color)
-            }
+//             label {
+//                 padding-left: 5px;
+//                 padding-bottom: 5px;
+//                 padding-top: 5px;
+//                 color: var(--dim-text-color)
+//             }
 
-            button {
-                background: none;
-                color: inherit;
-                border: none;
-                margin-right: 10px;
-                cursor: pointer;
-            }
+//             button {
+//                 background: none;
+//                 color: inherit;
+//                 border: none;
+//                 margin-right: 10px;
+//                 cursor: pointer;
+//             }
 
-            input {
-                padding: 10px;
-                margin: 0  auto;
-                width: 95%;
-                margin-bottom: 6px;
-                margin-top: 6px;
-                background: none;
-                border: none;
-                color: inherit;
-                font-size: 1.2rem;
-                outline-style: none;
-            }
-        }
-    }
+//             input {
+//                 padding: 10px;
+//                 margin: 0  auto;
+//                 width: 95%;
+//                 margin-bottom: 6px;
+//                 margin-top: 6px;
+//                 background: none;
+//                 border: none;
+//                 color: inherit;
+//                 font-size: 1.2rem;
+//                 outline-style: none;
+//             }
+//         }
+//     }
 
-}
-
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
+// }
 
 
-.tac {
-    margin: 0 auto;
-}
+// .v-enter-active,
+// .v-leave-active {
+//   transition: opacity 0.5s ease;
+// }
 
-@keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-}
+// .v-enter-from,
+// .v-leave-to {
+//   opacity: 0;
+// }
+
+
+// .tac {
+//     margin: 0 auto;
+// }
+
+// @keyframes spin {
+//     from {
+//       transform: rotate(0deg);
+//     }
+//     to {
+//       transform: rotate(360deg);
+//     }
+// }

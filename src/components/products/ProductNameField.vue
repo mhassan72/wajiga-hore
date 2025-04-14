@@ -1,15 +1,16 @@
 <template>
   <div class="field">
-    <label for="product_name" v-if="stSuggest.count < 1">Name</label>
-    <input 
+    <!-- <label for="product_name" v-if="stSuggest.count < 1">Faah Faahin Ku saabsan sheyga aad doneyso in aad iibiso</label> -->
+     <p v-if="stSuggest.count < 1" >Halkan waxaad ku qoraysaa faahfaahin kooban oo ku saabsan sheyga aad rabto inaad iibiso.</p>
+    <textarea 
       type="text" 
       id="product_name" 
-      placeholder="Product Name..." 
+      placeholder="Maxaad iibinaysaa? Faahfaahin yar halkan ku qor ..." 
       v-model="product.name" 
       v-if="stSuggest.count < 1" 
     />
     <button v-if="stSuggest.count < 1" @click="$emit('fetch-suggestions')">
-      Generate Suggestions
+      Hore Usoco
     </button>
 
     <div class="suggestions" v-if="stSuggest.count > 0 && stages.aiSelections.name">

@@ -34,13 +34,13 @@
         leave-active-class="animate__animated animate__fadeOutDown"
       >
         <div v-if="!search.query" class="browse">
-          <div class="products_viewed">
+          <!-- <div class="products_viewed">
             Products Viewed (sorted by date)
-          </div>
+          </div> -->
   
-          <div class="convos">
+          <!-- <div class="convos">
             Conversations (sorted by latest message)
-          </div>
+          </div> -->
   
           <ListedByCat />
         </div>

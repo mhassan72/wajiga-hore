@@ -3,7 +3,7 @@
         <PageHeader />
         <ProductTabs :price="product.price " :currency="product.currency" />
 
-        <ImageSlider :images="images" />
+        <ImageSlider :images="product.images"  v-if="product?.images.length > 0" />
 
 
         <div class="details">
@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import { reactive, onMounted } from 'vue'
 import { db } from '@/services/firebase'
-import { collection, doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import { useRoute } from 'vue-router'
 import PageHeader from '@/components/mobile/PageHeader.vue';
 import ProductTabs from '@/components/mobile/ProductTabs.vue'   
@@ -40,13 +40,32 @@ import ImageSlider from '@/components/shop/ImageSlider.vue'
 
 import '@/assets/styles/views/browse/ProductDetail.scss'
 
-const images = [
-    'https://cdn.dribbble.com/userupload/8705244/file/original-479b14c79b824778ff3e1b1cf62a96e3.jpg?resize=2400x1800&vertical=center',
-    'https://plus.unsplash.com/premium_photo-1661769750859-64b5f1539aa8?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdCUyMGltYWdlfGVufDB8fDB8fHww',
-    'https://lezzat.co.uk/wp-content/uploads/2021/03/Amazon-Product-Photography-Agency-UK-1.jpg'
-]
 
-const product = reactive({})
+const product = reactive<Products>({
+    name: '',
+    description: '',
+    category: '',
+    subcategory: '',
+    price: 0,
+    currency: 'USD',
+    stock: 0,
+    images: [],
+    sellerId: '',
+    returnPolicy: ''
+})
+
+interface Products {
+    name: string
+    description: string
+    category: string
+    subcategory: string
+    price: number
+    currency: string
+    stock: number
+    images: string[]
+    sellerId: string
+    returnPolicy?: string
+}
 
 function fetchProductDetails() {
     const route = useRoute()

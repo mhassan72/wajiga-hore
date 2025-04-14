@@ -1,5 +1,5 @@
 <template>
-  <div class="slider" ref="slider" >
+  <div class="slider" ref="slider">
     <div
       class="slides"
       :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
@@ -67,8 +67,7 @@ const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % props.images.length
 }
 const prevSlide = () => {
-  currentIndex.value =
-    (currentIndex.value - 1 + props.images.length) % props.images.length
+  currentIndex.value = (currentIndex.value - 1 + props.images.length) % props.images.length
 }
 const goToSlide = (index: number) => {
   currentIndex.value = index
@@ -87,8 +86,7 @@ const nextModalSlide = () => {
   modalIndex.value = (modalIndex.value + 1) % props.images.length
 }
 const prevModalSlide = () => {
-  modalIndex.value =
-    (modalIndex.value - 1 + props.images.length) % props.images.length
+  modalIndex.value = (modalIndex.value - 1 + props.images.length) % props.images.length
 }
 
 // Touch gestures
@@ -115,13 +113,12 @@ onMounted(() => window.addEventListener('keydown', handleKey))
 onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
 </script>
 
+
 <style lang="scss" scoped>
 .slider {
   position: relative;
   width: 100%;
-  margin: auto;
   overflow: hidden;
-  user-select: none;
   touch-action: pan-y;
 }
 
@@ -136,22 +133,26 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
 
   img {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    max-height: 400px;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
     display: block;
-    border-radius: 0;
+    background-color: #f4f4f4; // optional: fills space around images
   }
 
   .open-modal-btn {
     position: absolute;
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 0.75rem;
+    right: 0.75rem;
     background: rgba(0, 0, 0, 0.6);
-    color: white;
+    color: #fff;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
     cursor: pointer;
+    z-index: 2;
   }
 }
 
@@ -159,11 +160,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
   border: none;
-  padding: 0.6rem 1rem;
-  font-size: 1.5rem;
+  padding: 0.6rem;
+  font-size: 1.25rem;
   cursor: pointer;
   z-index: 2;
 
@@ -183,7 +184,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
   .dot {
     width: 10px;
     height: 10px;
-    margin: 0 4px;
+    margin: 0 3px;
     background-color: #ccc;
     border-radius: 50%;
     display: inline-block;
@@ -195,6 +196,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
   }
 }
 
+
+
 /* Modal styles */
 .modal {
   position: fixed;
@@ -204,65 +207,105 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
   justify-content: center;
   align-items: center;
   z-index: 1000;
-}
-
-.modal-content {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.modal-content .slides {
-  display: flex;
-  transition: transform 0.4s ease;
-}
-
-.modal-content .slide {
-  flex: 0 0 100%;
-  img {
-    width: 100%;
-    height: 100vh;
-    object-fit: contain;
-    border-radius: 0;
-  }
-}
-
-.modal .nav {
-  background: rgba(255, 255, 255, 0.2);
-  font-size: 2rem;
-  padding: 1rem;
-}
-
-.close {
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  font-size: 2.5rem;
-  color: white;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 2;
-}
-
-/* Desktop enhancements */
-@media (min-width: 768px) {
-  .slider {
-    max-width: 600px;
-  }
 
   .modal-content {
-    max-width: 800px;
+    position: relative;
+    width: 100%;
+    max-width: 90%; /* Limit width of the modal */
+    max-height: 90vh; /* Limit height of the modal */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    border-radius: 8px;
+  }
+
+  .slides {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    margin-right: 10px; /* Add a gap between images */
+  }
+
+  .slide:last-child {
+    margin-right: 0; /* Remove margin from the last image */
+  }
+
+  .slide img {
+    max-height: 100vh;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
   }
 
   .nav {
-    padding: 1rem 2rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    font-size: 2rem;
+    padding: 1rem;
+    cursor: pointer;
+    z-index: 10;
+
+    &.prev {
+      left: 1rem;
+    }
+
+    &.next {
+      right: 1rem;
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.5rem;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+  }
+}
+
+
+
+/* Enhancements for larger screens */
+@media (min-width: 768px) {
+  .slider {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .nav {
+    padding: 1rem;
+    font-size: 1.75rem;
   }
 
   .slide .open-modal-btn {
     font-size: 1rem;
     padding: 0.6rem 1.2rem;
   }
+
+  .modal-content {
+    max-width: 800px;
+  }
 }
+
 </style>

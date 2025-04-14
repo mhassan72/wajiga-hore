@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <PageHeader title="New Product" />
+    <PageHeader title="Shey-cusub" />
     <!-- {{ stSuggest }} -->
     <div class="new-product">
       
@@ -97,6 +97,14 @@
         @toggle-next-stage="toggleNextStage"
       />
 
+      <AddImages 
+        v-if="stages.aiSelections.images" 
+        @update:images="product.images = $event"
+        :images="product.images" 
+        @toggle-next-stage="toggleNextStage"  
+      />
+
+
 
     <!-- Submit Button -->
     <div class="field" v-if="stages.aiSelections.save_product">
@@ -123,16 +131,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import PageHeader from "@/components/mobile/PageHeader.vue";
-import { PRODUCT_CATEGORIES } from "@/store/shop/categories"; // Import your categories
-import type { Product, ProductStatus, Attribute } from "@/types/product"; // Ensure this type is defined
+import type { Product } from "@/types/product"; // Ensure this type is defined
 import axios from 'axios'
 import { db,  auth } from '@/services/firebase'
 import { doc, collection, setDoc } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router'
-
-
-
-import '@/assets/styles/views/products/new.scss'
 
 // import components
 import ProductNameField from '@/components/products/ProductNameField.vue'
@@ -144,11 +147,17 @@ import ProductStockField  from '@/components/products/ProductStockField.vue'
 import ProductStatusField from '@/components/products/ProductStatusField.vue'
 import ProductAttributesField from '@/components/products/ProductAttributesField.vue'
 import SellerLocationField from '@/components/products/SellerLocationField.vue'
-import SellerReturnPolicyField from '@/components/products/SellerReturnPolicyField'
+import SellerReturnPolicyField from '@/components/products/SellerReturnPolicyField.vue'
+import AddImages from '@/components/shop/AddImages.vue'
+
+import "@/assets/styles/views/products/new.scss";
+
 
 // set route and router
 const route = useRoute()
 const router = useRouter()
+
+const productImages : any =  []
 
 // Use the product ref from the service (or define it locally if needed)
 const product = ref<Product>({
@@ -195,6 +204,7 @@ interface AiSelections {
   attributes: boolean;
   location: boolean;
   seller_return_policy: boolean
+  images: boolean
   save_product: boolean
 }
 
@@ -216,6 +226,7 @@ const stages = ref<Stages>({
     attributes: false,
     location: false,
     seller_return_policy: false,
+    images: false,
     save_product: false
   }
 });
@@ -290,7 +301,6 @@ const handleSubmit = async () => {
 
     // Assign userId to the product before saving
     product.value.userId = user.uid;
-    product.value.shopId = route.params.shopId
     // Create a new document reference in the "products" collection
     const newProductRef = doc(collection(db, "products"));
 

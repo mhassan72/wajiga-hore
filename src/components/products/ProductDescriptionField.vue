@@ -17,17 +17,17 @@ const updateDescription = (description: string) => {
 
 <template>
   <div class="field">
-    <label for="product_description" v-if="stSuggest.count < 1">Description</label>
+    <label for="product_description" v-if="stages.aiSelections.description">Description</label>
     <textarea
       id="product_description"
       placeholder="Product Description..."
       v-model="product.description"
-      v-if="stSuggest.count < 1"
+      v-if="stages.aiSelections.description"
     ></textarea>
 
     <div class="suggestions" v-if="stages.aiSelections.description">
       <div class="callToAction">
-        <p> Waa tan liiskaaga AI-ga uu sameeyay, Fadlan dooro sharraxaadda badeecadda. </p>
+        <p> Waxaan kuu sameeyay liis sharraxaado ah. Fadlan dooro midda kugu habboon. </p>
       </div>
 
       <div

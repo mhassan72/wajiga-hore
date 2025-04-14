@@ -7,11 +7,13 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.12",
     "animate.css": "^4.1.1",
     "axios": "^1.8.4",
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
     "firebase": "^11.4.0",
+    "lodash-es": "^4.17.21",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",

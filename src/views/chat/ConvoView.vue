@@ -50,11 +50,16 @@
 
       <!-- Voice Recording & Playback -->
       <transition>
-        <div v-if="isRecording || audioBlob" class="soundWave animate__animated">
+        <div
+          v-if="isRecording || audioBlob"
+          class="soundWave animate__animated"
+        >
           <div class="recording-controls">
             <button v-if="isRecording" @click="stopRecording">⏹ Stop</button>
             <!-- Custom Playback Controls -->
-            <button v-if="audioBlob && !isPlaying" @click="playAudio">▶️</button>
+            <button v-if="audioBlob && !isPlaying" @click="playAudio">
+              ▶️
+            </button>
             <button v-if="audioBlob && isPlaying" @click="pauseAudio">⏸</button>
             <button v-if="audioBlob" @click="stopAudio"></button>
             <button v-if="audioBlob" @click="deleteAudio">
@@ -117,7 +122,9 @@
           </button>
 
           <!-- Send Recording Button (appears after recording is done) -->
-          <button v-if="audioBlob" class="sendButton" @click="sendRecording">➡️</button>
+          <button v-if="audioBlob" class="sendButton" @click="sendRecording">
+            ➡️
+          </button>
         </div>
       </div>
     </div>
@@ -139,7 +146,6 @@ import IconEcosystem from "@/components/icons/IconEcosystem.vue";
 import SoundWave from "@/components/chat/SoundWave.vue";
 import { storage, db } from "@/services/firebase";
 import {
-  getStorage,
   ref as stRef,
   uploadBytes,
   getDownloadURL,
@@ -349,7 +355,8 @@ const stopRecording = () => {
 // Process Audio and Convert to Multiple Formats
 const processAudio = () => {
   try {
-    if (audioChunks.value.length === 0) throw new Error("No audio data recorded.");
+    if (audioChunks.value.length === 0)
+      throw new Error("No audio data recorded.");
     audioBlob.value = new Blob(audioChunks.value, { type: "audio/webm" });
     audioURL.value = URL.createObjectURL(audioBlob.value);
 
@@ -419,7 +426,10 @@ const deleteAudio = () => {
 // Handle Click Outside Menu
 const handleClickOutside = (event: MouseEvent) => {
   if (!showPlusOptions.value) return;
-  if (plusOptionsRef.value && !plusOptionsRef.value.contains(event.target as Node)) {
+  if (
+    plusOptionsRef.value &&
+    !plusOptionsRef.value.contains(event.target as Node)
+  ) {
     showPlusOptions.value = false;
     document.removeEventListener("click", handleClickOutside);
   }
@@ -466,5 +476,7 @@ const beforeLeave = (el: HTMLElement) => {
 };
 
 // Cleanup on Unmount
-onBeforeUnmount(() => document.removeEventListener("click", handleClickOutside));
+onBeforeUnmount(() =>
+  document.removeEventListener("click", handleClickOutside)
+);
 </script>

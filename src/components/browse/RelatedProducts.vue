@@ -12,10 +12,17 @@
           @click="handleProductClick(product.id)"
         >
           <div class="product_item">
-            <p class="product_name">{{ product.name }}</p>
-            <p class="product_price">
-              {{ formatPrice(product.price, product.currency) }}
-            </p>
+            <div
+              class="image"
+              :style="{ backgroundImage: `url(${product.images[0]})` }"
+            ></div>
+
+            <div class="details">
+              <p class="product_name">{{ product.name }}</p>
+              <p class="product_price">
+                {{ formatPrice(product.price, product.currency) }}
+              </p>
+            </div>
           </div>
         </li>
       </ul>
@@ -29,6 +36,7 @@
 import { reactive, watch, ref, computed } from "vue";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
+import "@/assets/styles/components/related_product.scss";
 
 const props = defineProps<{
   vectors?: any[];
@@ -92,74 +100,4 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped>
-.related_products {
-  width: 90%;
-  margin: 0 auto;
-  padding: 1rem;
-  font-family: sans-serif;
-
-  .label {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-
-  .loader,
-  .no_products {
-    text-align: center;
-    font-size: 1rem;
-    padding: 1rem 0;
-  }
-
-  .product_list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-  }
-
-  .product_list li {
-    list-style: none;
-    flex: 1 1 calc(100% - 2rem); // full width on small screens
-    max-width: 100%;
-  }
-
-  @media (min-width: 600px) {
-    .product_list li {
-      flex: 1 1 calc(50% - 1rem);
-      max-width: calc(50% - 1rem);
-    }
-  }
-
-  @media (min-width: 900px) {
-    .product_list li {
-      flex: 1 1 calc(33.33% - 1rem);
-      max-width: calc(33.33% - 1rem);
-    }
-  }
-
-  .product_item {
-    border: 1px solid #ccc;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .product_name {
-    font-weight: bold;
-    margin-bottom: 0.25rem;
-    font-size: 1rem;
-  }
-
-  .product_price {
-    font-size: 0.95rem;
-    margin-top: auto;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

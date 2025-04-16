@@ -3,11 +3,9 @@
     enter-active-class="animate__animated animate__fadeInUp"
     leave-active-class="animate__animated animate__fadeOutDown"
   >
-    <div class="wrapper">
+    <div class="wrapper" v-if="visible">
       <div class="pricing">
-        <strong>
-          {{ formattedPrice }}
-        </strong>
+        <strong>{{ formattedPrice }}</strong>
       </div>
 
       <div class="quantity">
@@ -16,7 +14,7 @@
         <button @click="increment">+</button>
       </div>
 
-      <div class="bg-color">
+      <div class="bg-color" @click="startChat">
         <svg
           id="icon-plus"
           fill="currentColor"
@@ -33,15 +31,84 @@
     </div>
   </transition>
 </template>
+
 <script lang="ts" setup>
 import { profile } from "@/store/user/profile";
-import { computed, ref } from "vue";
+import { computed, ref, reactive } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { dbRt, auth } from "@/services/firebase";
+import { ref as dbRef, set, push } from "firebase/database";
 
+const router = useRouter();
+const route = useRoute();
+const visible = ref(true);
 const props = defineProps<{
   price?: number;
   currency?: string;
   stock?: number;
+  productId?: string;
+  sellerId?: string;
 }>();
+
+// Get current user and set the buyer/seller info
+const buyerId = auth.currentUser?.uid || "";
+const sellerId = props.sellerId;
+// Reactive state inside setup
+const chat = reactive({
+  messages: [
+    {
+      id: 1,
+      senderId: buyerId,
+      type: "text", // text | image | payment_request | order_update | receipt | system
+      text: "Asc, Wali ma heli karaa?",
+      timestamp: new Date().getTime(),
+      status: "delivered",
+    },
+  ],
+  context: {
+    productId: `${route.params.productId}`,
+    sellerId: sellerId, // could also be buyerId if you want both
+    order: {
+      orderId: "",
+      status: "pending", //  "delivered" | "cancelled" | "completed"
+    },
+  },
+  participants: [sellerId, buyerId], // optional but helpful
+  createdAt: new Date().getTime(),
+  updatedAt: new Date().getTime(),
+});
+
+// Function to start a new chat
+const startChat = async () => {
+  if (!auth.currentUser) {
+    alert("You must be logged in to start a chat!");
+    return;
+  }
+
+  try {
+    // Step 1: Create a new chat reference in Firebase Realtime Database
+    const newChatRef = push(dbRef(dbRt, "chats"));
+
+    // Step 2: Set initial data for the chat
+    await set(newChatRef, chat);
+
+    // Step 3: Update the chat ID to reference the newly created chat
+    const chatId = newChatRef.key || "";
+
+    // Step 4: Update the reactive chat object with the new chat ID
+    chat.context.order.orderId = chatId; // Store the chat ID in the order object
+    chat.createdAt = Date.now();
+    chat.updatedAt = Date.now();
+
+    // Optional: Navigate to the chat screen (e.g., to view the conversation)
+    router.push(`/chat/${chatId}`);
+
+    alert("Chat started successfully!");
+  } catch (error) {
+    console.error("Error starting chat:", error);
+    alert("There was an error starting the chat. Please try again.");
+  }
+};
 
 const count = ref(1);
 
@@ -79,6 +146,7 @@ const formattedPrice = computed(() => {
   }
 });
 </script>
+
 <style lang="scss" scoped>
 .bg-color {
   background: var(--primary-color);

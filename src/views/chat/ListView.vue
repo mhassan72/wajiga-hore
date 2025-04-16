@@ -21,66 +21,80 @@
     <transition
       enter-active-class="animate__animated animate__fadeIn"
       leave-active-class="animate__animated animate__fadeOut"
-      >
+    >
       <div class="loading_wrapper" v-if="loading">
-        <br>
+        <br />
         Loading ...
       </div>
     </transition>
 
     <transition
-            enter-active-class="animate__animated animate__fadeIn"
-            leave-active-class="animate__animated animate__fadeOut"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
     >
-
-    <div class="list_container" v-if="!loading">
-      <ul class="convo_list">
-        <li class="convo" v-for="chat in chats" :key="chat.chatId">
-          <router-link :to="`/chat/${chat.chatId}`">
-            <div
-              class="convo_image"
-              :style="{
-                'background-image': `url(${
-                  chat.product?.media?.images[0] || 'default-image.jpg'
-                })`,
-              }"
-            ></div>
-            <div class="convo_context">
-              <h5 class="convo_name">{{ chat.product?.title || "Unknown Product" }}</h5>
-              <p class="convo_last">{{ chat.lastMessageText || "No messages yet" }}</p>
-            </div>
-          </router-link>
-        </li>
-      </ul>
-    </div>
-
-  </transition>
-
-
+      <div class="list_container" v-if="!loading">
+        <ul class="convo_list">
+          <li class="convo" v-for="chat in chats" :key="chat.chatId">
+            <router-link :to="`/chat/${chat.chatId}`">
+              <div
+                class="convo_image"
+                :style="{
+                  'background-image': `url(${
+                    chat.product?.media?.images[0] ||
+                    'https://placehold.co/600x400/EEE/31343C'
+                  })`,
+                }"
+              ></div>
+              <div class="convo_context">
+                <h5 class="convo_name">
+                  {{ chat.chatId || "Unknown Product" }}
+                </h5>
+                <p class="convo_last">
+                  {{ chat.order || "No messages yet" }}
+                </p>
+              </div>
+            </router-link>
+          </li>
+        </ul>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { getDatabase, ref as rtdRef, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
-import { db, auth } from "@/services/firebase";
+import { dbRt, auth } from "@/services/firebase";
 import BackBtn from "@/components/mobile/BackBtn.vue";
 
 import "@/assets/styles/views/chats/chat_list.scss";
 
 // Define chat interface
 interface Chat {
-  id: string;
-  chatId: string;
-  shopId: string;
-  lastMessageText?: string;
-  product?: {
-    title?: string;
-    media?: {
-      images: string[];
+  context: {
+    id: string;
+    order: {
+      id: string;
+      status: string;
     };
   };
+  status: string;
+  productId: string;
+  sellerId: string;
+  createdAt: number;
+  messages: {
+    id: string;
+    text: string;
+    type: string; // Message type | Order | Order_status | Order_update | video | audio | image | audio | text |
+    senderId: string;
+    createdAt: number;
+  }[];
+  participants: {
+    id: string;
+    name: string;
+    avatarUrl: string;
+  }[];
 }
 
 // Reactive state
@@ -88,20 +102,30 @@ const chats = ref<Chat[]>([]);
 const loading = ref(true);
 
 // Fetch chats for the authenticated user
-const fetchChats = async () => {
+const fetchChats = () => {
   try {
     loading.value = true;
     const user = auth.currentUser;
-    if (!user) return console.warn("⚠️ User not authenticated");
+    if (!user) {
+      console.warn("⚠️ User not authenticated");
+      return;
+    }
 
-    const chatsCollection = collection(db, "chats");
-    const chatsQuery = query(chatsCollection, where("userId", "==", user.uid));
+    const chatsRef = rtdRef(dbRt, `chats`); // Reference to the 'chats' node in RTDB
 
-    const chatDocs = await getDocs(chatsQuery);
-    chats.value = chatDocs.docs.map((doc) => ({
-      chatId: doc.id,
-      ...doc.data(),
-    })) as Chat[];
+    onValue(chatsRef, (snapshot) => {
+      const chatsData = snapshot.val();
+
+      if (chatsData) {
+        // Convert the RTDB data (which is an object) into an array of chats
+        chats.value = Object.entries(chatsData).map(([chatId, chatData]) => ({
+          chatId: chatId,
+          ...(chatData as Omit<Chat, "chatId">), //chat data except chatId
+        })) as Chat[];
+      } else {
+        chats.value = []; // No chats found
+      }
+    });
   } catch (error) {
     console.warn("⚠️ Error fetching chats:", error);
   } finally {

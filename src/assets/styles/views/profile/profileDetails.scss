@@ -1,145 +1,166 @@
 .page_header {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 12px;
-    border-bottom: 1px solid var(--faded-color);
-    background: var(--background-color);;
-    z-index: 10;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid var(--faded-color);
+  background: var(--background-color);
+  z-index: 10;
 
-    .options {
-        background: none;
-        border: none;
-        color: inherit;
-    }
+  .options {
+    background: none;
+    border: none;
+    color: inherit;
+  }
 
-    .page_title {
-        font-weight: 300;
-        font-size: 1.2em;
-    }
+  .page_title {
+    font-weight: 300;
+    font-size: 1.2em;
+  }
 }
 
 .profile-card {
+  border-radius: 16px;
+  padding: 20px;
+  font-family: sans-serif;
+  margin-top: 80px;
+
+  .topNavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 20px 10px 20px;
+    background: var(--primary-color);
+    border-bottom: 2px solid gray;
+
+    h1 {
+      padding: 0;
+      margin: 0;
+      font-weight: 300;
+      font-size: 1.2rem;
+    }
+
+    button {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      color: inherit;
+      background: none;
+      border: none;
+    }
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
     border-radius: 16px;
-    padding: 20px;
-    font-family: sans-serif;
-    margin-top: 80px;
+    background-size: cover;
+    background-position: center;
+    background-color: #e0e0e0;
+  }
 
-    .topNavbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 10px 20px 10px 20px;
-        background: var(--primary-color);
-        border-bottom: 2px solid gray;
+  .profile-info {
+    text-align: left;
 
-        h1 {
-            padding: 0;
-            margin: 0;
-            font-weight: 300;
-            font-size: 1.2rem;
-        }
-
-        button {
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            color: inherit;
-            background: none;
-            border: none;
-        }
+    h2 {
+      font-size: 22px;
+      font-weight: bold;
     }
 
-    .avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 16px;
-        background-size: cover;
-        background-position: center;
-        background-color: #e0e0e0;
+    .role {
+      font-size: 14px;
+      font-weight: bold;
     }
 
-    .profile-info {
-        text-align: left;
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
 
-        h2 {
-            font-size: 22px;
-            font-weight: bold;
-        }
+      .btn-primary {
+        padding: 10px 15px;
+        border-radius: 8px;
+      }
 
-        .role {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-
-            .btn-primary {
-                padding: 10px 15px;
-                border-radius: 8px;
-            }
-
-            .btn-secondary {
-                background: #e0e0e0;
-                padding: 10px 15px;
-                border-radius: 8px;
-            }
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-
-            strong {
-                font-size: 16px;
-            }
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-
-            button {
-                background: none;
-                border: 1px solid gray;
-                font-weight: bold;
-                padding: 12px;
-                cursor: pointer;
-                color: inherit;
-
-                &.active {
-                    border-bottom: 2px solid #ff6f00;
-                    color: inherit;
-                }
-            }
-        }
-
-        .order-card {
-            border: 1px solid gray;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-
-            h3 {
-                font-size: 18px;
-            }
-
-            .status {
-                font-size: 14px;
-                font-weight: bold;
-            }
-        }
+      .btn-secondary {
+        background: #e0e0e0;
+        padding: 10px 15px;
+        border-radius: 8px;
+      }
     }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+
+      strong {
+        font-size: 16px;
+      }
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+
+      button {
+        background: none;
+        border: 1px solid gray;
+        font-weight: bold;
+        padding: 12px;
+        cursor: pointer;
+        color: inherit;
+
+        &.active {
+          border-bottom: 2px solid #ff6f00;
+          color: inherit;
+        }
+      }
+    }
+
+    .order-card {
+      border: 1px solid gray;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+
+      h3 {
+        font-size: 18px;
+      }
+
+      .status {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.product-item {
+  border-bottom: 2px solid var(--faded-color);
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  .images {
+    display: flex;
+    gap: 6px;
+    .image {
+      width: 100px;
+      height: 100px;
+      background-position: top center;
+      background-size: cover;
+      border-radius: 4px;
+    }
+  }
 }

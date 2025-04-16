@@ -1,29 +1,37 @@
 <template>
   <div class="page-custom">
-    <PageHeader />
+    <PageHeader
+      :product="route.params.productId"
+      :key="route.params.productId"
+    />
     <ProductTabs
+      v-if="product"
       :price="product.price"
       :currency="product.currency"
       :stock="product.stock"
+      :productId="product.id"
+      :sellerId="product.userId || product.sellerId"
     />
 
     <ImageSlider :images="product.images" v-if="product?.images.length > 0" />
 
     <div class="details">
       <h3>{{ product.name }}</h3>
+      <h3>{{ product.userId }}</h3>
 
       <p>
-        <span class="stock"> Stock: {{ product.stock }}</span> ,
-        <span class="category"> Category: {{ product.category }}</span> ,
-        <span class="brand"> Subcategory: {{ product.subcategory }}</span>
+        <span class="category">{{ product.category }}</span> ,
+        <span class="brand">{{ product.subcategory }}</span>
+        <span class="brand">{{ product.subcategory }}</span>
       </p>
 
       <p>
         {{ product.description }}
       </p>
 
-      <div class="returnPolicy" v-if="product.returnPolicy">
-        Return Policy: {{ product.returnPolicy }}
+      <div class="returnPolicy" v-if="product.sellerInfo?.returnPolicy">
+        Waxaad Kusoo cilinkar taa <br />
+        {{ product.sellerInfo?.returnPolicy }}
       </div>
     </div>
 

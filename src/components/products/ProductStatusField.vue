@@ -2,10 +2,9 @@
 const props = defineProps<{
   product: { status: string };
   stages: { aiSelections: { status: boolean } };
-
 }>();
 
-const emit = defineEmits(['update-product-status', 'toggle-next-stage']);
+const emit = defineEmits(["update-product-status", "toggle-next-stage"]);
 </script>
 
 <template>
@@ -22,6 +21,8 @@ const emit = defineEmits(['update-product-status', 'toggle-next-stage']);
       <option value="pending">Pending</option>
     </select>
 
-    <button class="continue" @click="emit('toggle-next-stage')">Continue ...</button>
+    <button class="continue" @click="emit('toggle-next-stage')">
+      Sii wad...
+    </button>
   </div>
 </template>

@@ -1,0 +1,52 @@
+.product-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 4px;
+}
+.images {
+  display: flex;
+  align-self: top;
+  gap: 10px;
+  .productImage {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+}
+
+.chips-custom {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: center;
+
+  .chip {
+    background: var(--faded-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    justify-self: center;
+  }
+}
+
+.product-preview__title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.product-preview__price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.product-preview__description {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}

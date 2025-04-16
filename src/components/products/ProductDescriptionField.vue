@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps<{
   product: { description: string };
   stSuggest: { count: number };
@@ -8,16 +6,18 @@ const props = defineProps<{
   suggetions: { descriptions: string[] };
 }>();
 
-const emit = defineEmits(['update-product-description', 'toggle-next-stage']);
+const emit = defineEmits(["update-product-description", "toggle-next-stage"]);
 
 const updateDescription = (description: string) => {
-  emit('update-product-description', description);
+  emit("update-product-description", description);
 };
 </script>
 
 <template>
   <div class="field">
-    <label for="product_description" v-if="stages.aiSelections.description">Description</label>
+    <label for="product_description" v-if="stages.aiSelections.description"
+      >Description</label
+    >
     <textarea
       id="product_description"
       placeholder="Product Description..."
@@ -27,7 +27,10 @@ const updateDescription = (description: string) => {
 
     <div class="suggestions" v-if="stages.aiSelections.description">
       <div class="callToAction">
-        <p> Waxaan kuu sameeyay liis sharraxaado ah. Fadlan dooro midda kugu habboon. </p>
+        <p>
+          Waxaan kuu sameeyay liis sharraxaado ah. Fadlan dooro midda kugu
+          habboon.
+        </p>
       </div>
 
       <div
@@ -35,7 +38,7 @@ const updateDescription = (description: string) => {
         v-for="(item, index) in suggetions.descriptions"
         :key="index"
         @click="updateDescription(item)"
-        :class="{ 'selectedOptionForm': product.description === item }"
+        :class="{ selectedOptionForm: product.description === item }"
       >
         <label class="magaca">{{ index + 1 }}</label>
         <p class="text">{{ item }}</p>
@@ -57,8 +60,10 @@ const updateDescription = (description: string) => {
           </label>
         </button>
       </div>
-
-      <button class="continue" @click="emit('toggle-next-stage')"> Continue ...</button>
+      <br />
+      <button class="continue" @click="emit('toggle-next-stage')">
+        Sii wad...
+      </button>
     </div>
   </div>
 </template>

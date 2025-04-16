@@ -4,17 +4,20 @@
     leave-active-class="animate__animated animate__fadeOutDown"
   >
     <div class="wrapper">
-      <RouterLink to="/">
+      <RouterLink to="/browse" :class="{ active: route.path === '/browse' }">
         <div>
           <IconHome />
         </div>
       </RouterLink>
-      <RouterLink :to="`/profile/${profile.id}`">
+      <RouterLink to="/chats" :class="{ active: route.path === '/chats' }">
         <div>
-          <IconUser />
+          <IconCommunity />
         </div>
       </RouterLink>
-      <RouterLink :to="routeNewProduct">
+      <RouterLink
+        :to="routeNewProduct"
+        :class="{ active: route.path.startsWith('/sheycusub') }"
+      >
         <div class="bg-color">
           <svg
             id="icon-plus"
@@ -29,19 +32,26 @@
           </svg>
         </div>
       </RouterLink>
-      <RouterLink to="/favourite">
+      <RouterLink
+        to="/favourite"
+        :class="{ active: route.path === '/favourite' }"
+      >
         <div>
           <IconSupport />
         </div>
       </RouterLink>
-      <RouterLink to="/chats">
+      <RouterLink
+        :to="`/profile/${profile.id}`"
+        :class="{ active: route.path === `/profile/${profile.id}` }"
+      >
         <div>
-          <IconCommunity />
+          <IconUser />
         </div>
       </RouterLink>
     </div>
   </transition>
 </template>
+
 <script lang="ts" setup>
 import "@/assets/styles/components/tabs.scss";
 import IconHome from "@/components/icons/IconHome.vue";
@@ -56,3 +66,10 @@ const route = useRoute();
 
 const routeNewProduct = `/sheycusub/${profile.value.id}`;
 </script>
+
+<style scoped>
+.router-link-active,
+.active {
+  color: var(--primary-color);
+}
+</style>

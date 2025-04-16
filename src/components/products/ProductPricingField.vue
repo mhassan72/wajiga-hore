@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps<{
   product: { price: number; currency: string };
   stages: { aiSelections: { pricing: boolean } };
 }>();
 
-const emit = defineEmits(['update-product-price', 'update-product-currency', 'toggle-next-stage']);
+const emit = defineEmits([
+  "update-product-price",
+  "update-product-currency",
+  "toggle-next-stage",
+]);
 </script>
 
 <template>
@@ -39,6 +41,8 @@ const emit = defineEmits(['update-product-price', 'update-product-currency', 'to
       </select>
     </div>
 
-    <button class="continue" @click="emit('toggle-next-stage')">Continue ...</button>
+    <button class="continue" @click="emit('toggle-next-stage')">
+      Sii wad...
+    </button>
   </div>
 </template>

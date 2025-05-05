@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <PageHeader title="Shey-cusub" />
-    <!-- {{ stSuggest }} -->
+
     <div class="new-product">
       <ProductNameField
         :product="product"
@@ -109,11 +109,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import PageHeader from "@/components/mobile/PageHeader.vue";
 import type { Product } from "@/types/product"; // Ensure this type is defined
 import axios from "axios";
 import { db, auth } from "@/services/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import { doc, collection, setDoc } from "firebase/firestore";
 import { useRoute, useRouter } from "vue-router";
 import ProductPreview from "@/components/products/ProductPreview.vue";
@@ -137,7 +138,21 @@ import "@/assets/styles/views/products/new.scss";
 const route = useRoute();
 const router = useRouter();
 
+const currentUser = ref<any>(null);
+
 const productImages: any = [];
+
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser.value = user || null;
+      product.value.sellerId = currentUser.value?.uid || "";
+      product.value.userId = currentUser.value?.uid || "";
+    } else {
+      currentUser.value = null;
+    }
+  });
+});
 
 // Use the product ref from the service (or define it locally if needed)
 const product = ref<Product>({
@@ -149,8 +164,8 @@ const product = ref<Product>({
   currency: "USD",
   stock: 0,
   images: [],
-  sellerId: "",
-  userId: "",
+  sellerId: currentUser.value?.uid || "",
+  userId: currentUser.value?.uid || "",
   createdAt: new Date(),
   updatedAt: new Date(),
   status: "active",
@@ -213,6 +228,7 @@ const stages = ref<Stages>({
 
 function toggleNextStage() {
   // Get all keys from aiSelections
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const stageKeys = Object.keys(stages.value.aiSelections) as Array<
     keyof AiSelections
   >;

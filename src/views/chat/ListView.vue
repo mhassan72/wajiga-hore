@@ -3,7 +3,7 @@
     <!-- Chat Header -->
     <div class="chat_header">
       <BackBtn />
-      <div class="user">Conversations</div>
+      <div class="user">Wada Hadal</div>
       <button class="options">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -38,19 +38,28 @@
             <router-link :to="`/chat/${chat.chatId}`">
               <div
                 class="convo_image"
+                v-if="
+                  Array.isArray(chat?.context?.product?.images) &&
+                  chat.context.product.images.length > 0
+                "
                 :style="{
                   'background-image': `url(${
-                    chat.product?.media?.images[0] ||
+                    chat.context.product.images[0] ||
                     'https://placehold.co/600x400/EEE/31343C'
                   })`,
                 }"
               ></div>
               <div class="convo_context">
                 <h5 class="convo_name">
-                  {{ chat.chatId || "Unknown Product" }}
+                  {{ chat?.context?.product?.name || "Unknown Product" }}
                 </h5>
                 <p class="convo_last">
-                  {{ chat.order || "No messages yet" }}
+                  {{
+                    Array.isArray(chat.messages) && chat.messages.length > 0
+                      ? chat.messages[chat.messages.length - 1]?.text ||
+                        "No message content"
+                      : "No messages yet"
+                  }}
                 </p>
               </div>
             </router-link>
@@ -63,17 +72,20 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import { getDatabase, ref as rtdRef, onValue } from "firebase/database";
-import { getAuth } from "firebase/auth";
-import { dbRt, auth } from "@/services/firebase";
+import { ref as rtdRef, onValue } from "firebase/database";
+import { auth, dbRt } from "@/services/firebase";
 import BackBtn from "@/components/mobile/BackBtn.vue";
-
 import "@/assets/styles/views/chats/chat_list.scss";
 
 // Define chat interface
 interface Chat {
+  chatId: string;
   context: {
     id: string;
+    product?: {
+      name?: string;
+      images?: string[];
+    };
     order: {
       id: string;
       status: string;
@@ -86,22 +98,18 @@ interface Chat {
   messages: {
     id: string;
     text: string;
-    type: string; // Message type | Order | Order_status | Order_update | video | audio | image | audio | text |
+    type: string;
     senderId: string;
     createdAt: number;
   }[];
-  participants: {
-    id: string;
-    name: string;
-    avatarUrl: string;
-  }[];
+  participants: string[];
 }
 
 // Reactive state
 const chats = ref<Chat[]>([]);
 const loading = ref(true);
 
-// Fetch chats for the authenticated user
+// Fetch chats
 const fetchChats = () => {
   try {
     loading.value = true;
@@ -111,28 +119,34 @@ const fetchChats = () => {
       return;
     }
 
-    const chatsRef = rtdRef(dbRt, `chats`); // Reference to the 'chats' node in RTDB
+    const chatsRef = rtdRef(dbRt, `chats`);
+    const currentUserId = user.uid;
 
     onValue(chatsRef, (snapshot) => {
       const chatsData = snapshot.val();
 
       if (chatsData) {
-        // Convert the RTDB data (which is an object) into an array of chats
-        chats.value = Object.entries(chatsData).map(([chatId, chatData]) => ({
-          chatId: chatId,
-          ...(chatData as Omit<Chat, "chatId">), //chat data except chatId
-        })) as Chat[];
+        chats.value = Object.entries(chatsData)
+          .filter(([_, chatData]) => {
+            const participants = chatData.participants || [];
+            return participants.includes(currentUserId);
+          })
+          .map(([chatId, chatData]) => ({
+            chatId,
+            ...(chatData as Omit<Chat, "chatId">),
+          }))
+          .sort((a, b) => b.createdAt - a.createdAt);
       } else {
-        chats.value = []; // No chats found
+        chats.value = [];
       }
+
+      loading.value = false;
     });
   } catch (error) {
     console.warn("⚠️ Error fetching chats:", error);
-  } finally {
     loading.value = false;
   }
 };
 
-// Fetch chats on mount
 onMounted(fetchChats);
 </script>

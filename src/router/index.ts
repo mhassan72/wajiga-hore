@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/services/firebase"; // Import the initialized Firebase app
+import { auth, analytics } from "@/services/firebase"; // Import the initialized Firebase app
+import { logEvent } from "firebase/analytics";
 import { routes } from "./routes";
 import { fetchProfile } from "@/store/user/profile";
 
@@ -28,6 +29,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!user) {
+      logEvent(analytics, "auth_required", { page: to.name }); // Log event
       next({ name: "login" });
     } else {
       next();
@@ -35,11 +37,13 @@ router.beforeEach(async (to, from, next) => {
   } else if (to.matched.some((record) => record.meta.requiresUnauth)) {
     if (user) {
       await fetchProfile((user as any).uid);
+      logEvent(analytics, "already_authenticated", { page: to.name }); // Log event
       next({ name: "profile", params: { uid: (user as any).uid } });
     } else {
       next();
     }
   } else {
+    logEvent(analytics, "page_view", { page: to.name }); // Log event
     next();
   }
 });

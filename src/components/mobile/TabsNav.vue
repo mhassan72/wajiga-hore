@@ -59,12 +59,28 @@ import IconUser from "@/components/icons/IconUser.vue";
 import IconSupport from "@/components/icons/IconSupport.vue";
 import IconCommunity from "@/components/icons/IconCommunity.vue";
 import { profile } from "@/store/user/profile";
+import { ref, onMounted } from "vue";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/services/firebase";
 
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+const currentUser = ref<any>(null);
 
-const routeNewProduct = `/sheycusub/${profile.value.id}`;
+const routeNewProduct = ref<string>("");
+
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser.value = user || null;
+      routeNewProduct.value = `/sheycusub/${currentUser.value.uid}`;
+    } else {
+      currentUser.value = null;
+      routeNewProduct.value = "";
+    }
+  });
+});
 </script>
 
 <style scoped>

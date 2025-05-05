@@ -8,6 +8,7 @@ const props = defineProps<{
   title?: string;
   product?: string;
   menu?: boolean;
+  chat?: boolean;
 }>();
 
 const route = useRoute();
@@ -28,7 +29,7 @@ onMounted(() => {
 
     <h1 class="page_title" v-if="title">{{ title }}</h1>
 
-    <div class="product">
+    <div class="product" v-if="product">
       <button
         class="btn-clear"
         :class="{ favorite: isFavorite }"
@@ -50,6 +51,20 @@ onMounted(() => {
     </div>
 
     <button class="options" v-if="menu">
+      <svg
+        id="icon-more-vertical"
+        fill="currentColor"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M14 12c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414zM14 5c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414zM14 19c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414z"
+        ></path>
+      </svg>
+    </button>
+
+    <button class="options" v-if="chat">
       <svg
         id="icon-more-vertical"
         fill="currentColor"

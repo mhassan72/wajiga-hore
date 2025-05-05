@@ -4,20 +4,22 @@
       :product="route.params.productId"
       :key="route.params.productId"
     />
+
     <ProductTabs
-      v-if="product"
+      v-if="isMounted && product"
       :price="product.price"
       :currency="product.currency"
       :stock="product.stock"
       :productId="product.id"
-      :sellerId="product.userId || product.sellerId"
+      :sellerId="product.userId"
+      :productName="product.name"
+      :images="product.images"
     />
 
     <ImageSlider :images="product.images" v-if="product?.images.length > 0" />
 
     <div class="details">
       <h3>{{ product.name }}</h3>
-      <h3>{{ product.userId }}</h3>
 
       <p>
         <span class="category">{{ product.category }}</span> ,
@@ -25,9 +27,7 @@
         <span class="brand">{{ product.subcategory }}</span>
       </p>
 
-      <p>
-        {{ product.description }}
-      </p>
+      <p>{{ product.description }}</p>
 
       <div class="returnPolicy" v-if="product.sellerInfo?.returnPolicy">
         Waxaad Kusoo cilinkar taa <br />
@@ -43,19 +43,19 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, onMounted, watch } from "vue";
-import { db } from "@/services/firebase";
+import { ref, reactive, watch, onMounted } from "vue";
+import { db, analytics } from "@/services/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useRoute, useRouter } from "vue-router";
 import PageHeader from "@/components/mobile/PageHeader.vue";
 import ProductTabs from "@/components/mobile/ProductTabs.vue";
 import ImageSlider from "@/components/shop/ImageSlider.vue";
 import RelatedProducts from "@/components/browse/RelatedProducts.vue";
-
+import { logEvent } from "firebase/analytics";
 const route = useRoute();
 const router = useRouter();
 
-const product = reactive({
+const product = reactive<any>({
   name: "",
   description: "",
   category: "",
@@ -65,18 +65,23 @@ const product = reactive({
   stock: 0,
   images: [],
   sellerId: "",
+  userId: "",
   returnPolicy: "",
   embeddings: [],
+  sellerInfo: {},
 });
+
+const isMounted = ref(false);
 
 function fetchProductDetails() {
   const productId = route.params.productId;
   const productRef = doc(db, "products", productId.toString());
 
-  getDoc(productRef)
-    .then((doc) => {
-      if (doc.exists()) {
-        Object.assign(product, doc.data());
+  return getDoc(productRef)
+    .then((docSnap) => {
+      if (docSnap.exists()) {
+        Object.assign(product, docSnap.data());
+        isMounted.value = true;
       } else {
         console.log("No such document!");
       }
@@ -87,16 +92,25 @@ function fetchProductDetails() {
 }
 
 function handleProductClick(id: number) {
-  // Force component to reload by pushing to the same route with different ID
   router
     .push({ name: "product", params: { productId: id.toString() } })
     .then(() => {
-      // Reset product data before fetching new one
       Object.assign(product, {
         name: "",
         description: "",
-        // ... other default values
+        category: "",
+        subcategory: "",
+        price: 0,
+        currency: "USD",
+        stock: 0,
+        images: [],
+        sellerId: "",
+        userId: "",
+        returnPolicy: "",
+        embeddings: [],
+        sellerInfo: {},
       });
+      isMounted.value = false;
       fetchProductDetails();
     })
     .catch((err) => {
@@ -104,16 +118,34 @@ function handleProductClick(id: number) {
     });
 }
 
-// Watch for route changes
 watch(
   () => route.params.productId,
   (newId) => {
     if (newId) {
-      fetchProductDetails();
+      isMounted.value = false;
+      fetchProductDetails().finally(() => {
+        document.title = product.name;
+
+        logEvent(analytics, "view_product", {
+          product_id: product.id,
+          product_name: product.name,
+        });
+      });
     }
   },
   { immediate: true }
 );
+
+onMounted(async () => {
+  await fetchProductDetails().finally(() => {
+    document.title = product.name;
+
+    logEvent(analytics, "view_product", {
+      product_id: product.id,
+      product_name: product.name,
+    });
+  });
+});
 </script>
 
 <style lang="scss" scoped>

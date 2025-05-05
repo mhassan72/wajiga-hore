@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import { profile } from "@/store/user/profile";
-import { computed, ref, reactive } from "vue";
+import { computed, ref, reactive, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { dbRt, auth } from "@/services/firebase";
 import { ref as dbRef, set, push } from "firebase/database";
@@ -43,16 +43,24 @@ const router = useRouter();
 const route = useRoute();
 const visible = ref(true);
 const props = defineProps<{
-  price?: number;
+  price?: any;
   currency?: string;
   stock?: number;
   productId?: string;
+  productName?: string;
   sellerId?: string;
+  images?: any[];
 }>();
+
+const { productName } = toRefs(props);
 
 // Get current user and set the buyer/seller info
 const buyerId = auth.currentUser?.uid || "";
 const sellerId = props.sellerId;
+const count = ref(1);
+
+const priceMultiplier = computed(() => props.price * count.value);
+
 // Reactive state inside setup
 const chat = reactive({
   messages: [
@@ -63,14 +71,24 @@ const chat = reactive({
       text: "Asc, Wali ma heli karaa?",
       timestamp: new Date().getTime(),
       status: "delivered",
+      senderName: auth.currentUser?.displayName,
     },
   ],
   context: {
     productId: `${route.params.productId}`,
-    sellerId: sellerId, // could also be buyerId if you want both
+    sellerId: props.sellerId, // could also be buyerId if you want both
     order: {
       orderId: "",
       status: "pending", //  "delivered" | "cancelled" | "completed"
+    },
+    product: {
+      id: `${route.params.productId}`,
+      name: props.productName,
+      images: props.images,
+      price: priceMultiplier,
+      currency: props.currency,
+      stock: props.stock,
+      quantity: count.value,
     },
   },
   participants: [sellerId, buyerId], // optional but helpful
@@ -110,8 +128,6 @@ const startChat = async () => {
   }
 };
 
-const count = ref(1);
-
 function increment() {
   if (count.value >= props?.stock) return;
   count.value++;
@@ -134,7 +150,9 @@ const formattedPrice = computed(() => {
     });
 
     // Extract numeric part & manually prepend $
-    const parts = formatter.formatToParts(props.price);
+    const parts = formatter.formatToParts(
+      priceMultiplier ? priceMultiplier.value : props.price
+    );
     const amount = parts
       .filter((part) => part.type !== "currency")
       .map((part) => part.value)

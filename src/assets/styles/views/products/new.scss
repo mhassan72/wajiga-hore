@@ -1,129 +1,147 @@
 .page {
-    margin-top: 100px;
+  margin-top: 100px;
 }
 
-.new-product{
+.new-product {
   max-width: 600px;
   margin: 0 auto;
   padding: 12px;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
 }
 .suggestions {
+  color: var(--svg-validator-error);
+
+  .callToAction {
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .item {
+    margin-bottom: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin: 0 auto;
+    padding-left: 10px;
+    padding-right: 10px;
     color: var(--svg-validator-error);
 
-    .callToAction {
-        width: 60%;
-        margin: 0 auto;
-        text-align: center;
+    button {
+      background: none;
+      color: var(--svg-validator-error);
+
+      &:hover {
+        background: none;
+      }
+
+      .active {
+        color: white;
+      }
     }
 
-
-    .item{
-        margin-bottom: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 90%;
-        margin: 0 auto;
-        padding-left: 10px;
-        padding-right: 10px;
-        color: var(--svg-validator-error);
-
-        button {
-            background: none;
-            color: var(--svg-validator-error);
-            
-            &:hover {
-                background: none;
-            }
-
-            .active {
-                color: white
-            }
-        }
-
-        .magaca {
-            font-weight: bold;
-            // color: var(--)
-        }
-
-        .text {
-            width: 60%;
-        }
+    .magaca {
+      font-weight: bold;
+      // color: var(--)
     }
 
-    .selectedOptionForm {
-        background: var(--faded-color);
-        color: var(--secondery-text);
-        border-radius: 3px;
-
-        svg {
-            color: var(--primary-color)
-        }
+    .text {
+      width: 60%;
     }
   }
 
+  .selectedOptionForm {
+    background: var(--faded-color);
+    color: var(--secondery-text);
+    border-radius: 3px;
+
+    svg {
+      color: var(--primary-color);
+    }
+  }
+}
 
 .chipper {
-    padding: 12px;
-    background: red;
-    .chip {
-    }
+  padding: 12px;
+  background: red;
+  .chip {
+  }
 }
-
 
 .chips {
-    color: white !important;
-    display: flex;
-
+  color: white !important;
+  display: flex;
 }
 
+input {
+  border: none;
+}
+
+.field {
+  #product_name {
+    border: 2px solid var(--primary-color);
+    background: none;
+    color: inherit;
+    margin-bottom: 20px;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      border-color: var(--primary-color);
+      color: inherit;
+      outline: none;
+    }
+  }
+}
 
 .loading-wrapper {
-    position: fixed; // or 'absolute' if within a positioned parent
-    top: 80px;
-    left: 0;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    pointer-events: none; // allows clicks to pass through
-  }
-  
-  .loading {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    
-    &__dot {
-      width: 0.75rem;
-      height: 0.75rem;
-      border-radius: 50%;
-      background-color: #4f46e5;
-      display: inline-block;
-      
-      &:nth-child(1) {
-        animation: bounce 1.4s infinite ease-in-out;
-      }
-      &:nth-child(2) {
-        animation: bounce 1.4s infinite ease-in-out 0.2s;
-      }
-      &:nth-child(3) {
-        animation: bounce 1.4s infinite ease-in-out 0.4s;
-      }
+  position: fixed; // or 'absolute' if within a positioned parent
+  top: 80px;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; // allows clicks to pass through
+}
+
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &__dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: #4f46e5;
+    display: inline-block;
+
+    &:nth-child(1) {
+      animation: bounce 1.4s infinite ease-in-out;
+    }
+    &:nth-child(2) {
+      animation: bounce 1.4s infinite ease-in-out 0.2s;
+    }
+    &:nth-child(3) {
+      animation: bounce 1.4s infinite ease-in-out 0.4s;
     }
   }
-  
-  @keyframes bounce {
-    0%, 80%, 100% { 
-      transform: scale(0);
-      opacity: 0.5;
-    }
-    40% { 
-      transform: scale(1);
-      opacity: 1;
-    }
+}
+
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.5;
   }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

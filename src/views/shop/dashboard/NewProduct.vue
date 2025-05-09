@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <PageHeader title="Shey-cusub" />
+    <PageHeader title="Shey-cusub" :menu="true" />
 
     <div class="new-product">
       <ProductNameField
@@ -9,7 +9,7 @@
         :stages="stages"
         :suggetions="suggetions"
         @fetch-suggestions="fetchsuggestions"
-        @update-product-name="(name) => (product.name = name)"
+        @update-product-name="(name: string) => (product.name = name)"
         @toggle-next-stage="toggleNextStage"
       />
 
@@ -18,7 +18,7 @@
         :stSuggest="stSuggest"
         :stages="stages"
         :suggetions="suggetions"
-        @update-product-description="(desc) => (product.description = desc)"
+        @update-product-description="(desc: string) => (product.description = desc)"
         @toggle-next-stage="toggleNextStage"
       />
 
@@ -26,7 +26,7 @@
         :product="product"
         :stages="stages"
         :suggetions="suggetions"
-        @update-product-category="(category) => (product.category = category)"
+        @update-product-category="(category: string) => (product.category = category)"
         @toggle-next-stage="toggleNextStage"
       />
 
@@ -35,7 +35,7 @@
         :stages="stages"
         :suggetions="suggetions"
         @update-product-subcategory="
-          (subcategory) => (product.subcategory = subcategory)
+          (subcategory: string) => (product.subcategory = subcategory)
         "
         @toggle-next-stage="toggleNextStage"
       />
@@ -43,22 +43,22 @@
       <ProductPricingField
         :product="product"
         :stages="stages"
-        @update-product-price="(price) => (product.price = price)"
-        @update-product-currency="(currency) => (product.currency = currency)"
+        @update-product-price="(price: number) => (product.price = price)"
+        @update-product-currency="(currency: string) => (product.currency = currency)"
         @toggle-next-stage="toggleNextStage"
       />
 
       <ProductStockField
         :product="product"
         :stages="stages"
-        @update-product-stock="(stock) => (product.stock = stock)"
+        @update-product-stock="(stock: number) => (product.stock = stock)"
         @toggle-next-stage="toggleNextStage"
       />
 
       <ProductStatusField
         :product="product"
         :stages="stages"
-        @update-product-status="(status) => (product.status = status)"
+        @update-product-status="(status: string) => (product.status = status)"
         @toggle-next-stage="toggleNextStage"
       />
 
@@ -228,7 +228,6 @@ const stages = ref<Stages>({
 
 function toggleNextStage() {
   // Get all keys from aiSelections
-  window.scrollTo({ top: 0, behavior: "smooth" });
   const stageKeys = Object.keys(stages.value.aiSelections) as Array<
     keyof AiSelections
   >;
@@ -263,6 +262,8 @@ function toggleNextStage() {
   if (allStagesCompleted) {
     stages.value.aiSelections.save_product = true;
   }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 const isLoading = ref(false);
